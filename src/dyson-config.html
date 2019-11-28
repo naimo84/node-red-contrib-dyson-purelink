@@ -1,0 +1,43 @@
+<script type="text/javascript">
+    RED
+        .nodes
+        .registerType('dyson-config', {
+            category: 'config',
+            defaults: {                
+                username: {
+                    value: ""
+                },
+                password: {
+                    value: ""
+                }              
+            },
+            label: function () {
+                if (this.name) {
+                    return this.name;
+                }
+                return "Config";
+            }            
+        });
+</script>
+
+<script type="text/x-red" data-template-name="dyson-config">
+    
+    <div class="form-row">
+        <label for="node-config-input-username" style="width:160px !important">
+            <i class="fa fa-user"></i>
+            <span>Username:</span></label>
+        <input type="text" id="node-config-input-username" placeholder="" style="width:280px !important">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-password" style="width:160px !important">
+            <i class="fa fa-key"></i>
+            <span>Password:</span></label>
+        <input type="password" id="node-config-input-password" placeholder="" style="width:280px !important">
+    </div>
+    </div>
+   
+</script>
+
+<script type="text/x-red" data-help-name="dyson-config">
+    <p>Configuration</p> 
+</script>
