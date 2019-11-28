@@ -21,7 +21,7 @@ module.exports = function (RED: Red) {
     }
 
     function cronCheckJob(msg: any, node: Node, config: any) {
-        let pureLink = new DysonPureLink(this.config.username, this.config.password, 'DE');
+        let pureLink = new DysonPureLink(config.username, config.password, 'DE');
         pureLink.getDevices().then(devices => {
             if (!Array.isArray(devices) || devices.length === 0) {
                 node.log('No devices found')
