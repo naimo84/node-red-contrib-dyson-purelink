@@ -8,8 +8,7 @@ module.exports = function (RED: Red) {
         let configNode = RED.nodes.getNode(config.confignode);
         let node = this;
         this.config = configNode;
-        this.config.pureLink = new DysonPureLink(this.config.username, this.config.password, 'DE');
-
+   
         try {
             node.on('input', (msg) => {
                 cronCheckJob(msg, this, this.config);
@@ -22,7 +21,8 @@ module.exports = function (RED: Red) {
     }
 
     function cronCheckJob(msg: any, node: Node, config: any) {
-        config.pureLink.getDevices().then(devices => {
+        let pureLink = new DysonPureLink(this.config.username, this.config.password, 'DE');
+        pureLink.getDevices().then(devices => {
             if (!Array.isArray(devices) || devices.length === 0) {
                 node.log('No devices found')
                 return
