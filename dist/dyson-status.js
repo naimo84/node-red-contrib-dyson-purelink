@@ -11,7 +11,7 @@ module.exports = function (RED) {
         this.config = configNode;
         try {
             node.on('input', function (msg) {
-                lodash_1.debounce(function () { return cronCheckJob(msg, _this, _this.config); }, 2000);
+                lodash_1.debounce(function () { return cronCheckJob.bind(null, msg, _this, _this.config); }, 2000);
             });
         }
         catch (err) {
