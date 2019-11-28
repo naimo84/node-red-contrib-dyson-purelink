@@ -1,0 +1,37 @@
+<script type="text/javascript">
+    RED
+        .nodes
+        .registerType('dyson-action', {
+            category: 'dyson',
+            defaults: {
+                confignode: {
+                    value: "",
+                    type: "dyson-config"
+                }              
+            },
+            inputs: 1,
+            outputs: 1,          
+            color: "#E7AE24",
+            label: function () {
+                if (this.name) {
+                    return this.name;
+                } else if (this.confignode.name) {
+                    return this.confignode.name;
+                }
+                return "action";
+            },
+            icon: "calendar.png",
+            paletteLabel: "action"          
+        });
+</script>
+
+<script type="text/x-red" data-template-name="dyson-action">
+    <div class="form-row">
+        <label for="node-input-confignode"><i class="fa fa-globe"></i> <span>Config</span></label>
+        <input type="text" id="node-input-confignode">
+    </div>  
+</script>
+
+<script type="text/x-red" data-help-name="dyson-action">
+   
+</script>

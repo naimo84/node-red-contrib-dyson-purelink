@@ -29,26 +29,17 @@ module.exports = function (RED: Red) {
             }
 
             switch (msg.action) {
-                case 'getTemperature':
-                    devices[0].getTemperature().then(t => node.send({ payload: t }))
+                case 'turnOn':
+                    devices[0].turnOn();
                     break;
-                case 'getAirQuality':
-                    devices[0].getAirQuality().then(t => node.send({ payload: t }))
+                case 'turnOff':
+                    devices[0].turnOff();
                     break;
-                case 'getRelativeHumidity':
-                    devices[0].getRelativeHumidity().then(t => node.send({ payload: t }))
+                case 'setRotation':
+                    devices[0].setRotation(msg.rotation).then(t => node.send({ payload: t }))
                     break;
-                case 'getFanStatus':
-                    devices[0].getFanStatus().then(t => node.send({ payload: t }))
-                    break;
-                case 'getFanSpeed':
-                    devices[0].getFanSpeed().then(t => node.send({ payload: t }))
-                    break;
-                case 'getRotationStatus':
-                    devices[0].getRotationStatus().then(t => node.send({ payload: t }))
-                    break;
-                case 'getAutoOnStatus':
-                    devices[0].getAutoOnStatus().then(t => node.send({ payload: t }))
+                case 'setFanSpeed':
+                    devices[0].setFanSpeed(msg.speed).then(t => node.send({ payload: t }))
                     break;
             }
 
@@ -57,5 +48,5 @@ module.exports = function (RED: Red) {
         }).catch(err => node.error(err))
     }
 
-    RED.nodes.registerType("dyson-status", sensorNode);
+    RED.nodes.registerType("dyson-action", sensorNode);
 }

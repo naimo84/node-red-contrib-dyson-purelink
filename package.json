@@ -29,6 +29,7 @@
   "node-red": {
     "nodes": {
       "dyson-config": "dist/dyson-config.js",
+      "dyson-action": "dist/dyson-action.js",
       "dyson-status": "dist/dyson-status.js"
     }
   },
