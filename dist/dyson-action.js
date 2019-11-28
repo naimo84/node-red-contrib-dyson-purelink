@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var lodash_1 = require("lodash");
-var DysonPureLink = require('dyson-purelink');
+var DysonPurelink_1 = require("./DysonPurelink");
 module.exports = function (RED) {
     function sensorNode(config) {
         var _this = this;
@@ -20,7 +20,7 @@ module.exports = function (RED) {
         }
     }
     function cronCheckJob(msg, node, config) {
-        var pureLink = new DysonPureLink(config.username, config.password, 'DE');
+        var pureLink = new DysonPurelink_1.DysonPurelink(config.username, config.password);
         pureLink.getDevices().then(function (devices) {
             if (!Array.isArray(devices) || devices.length === 0) {
                 node.log('No devices found');

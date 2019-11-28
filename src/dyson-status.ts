@@ -1,7 +1,7 @@
 
 import { Red, Node } from 'node-red';
 import { debounce } from "lodash";
-var DysonPureLink = require('dyson-purelink')
+import { DysonPurelink } from "./DysonPurelink";
 
 module.exports = function (RED: Red) {
     function sensorNode(config: any) {
@@ -22,7 +22,7 @@ module.exports = function (RED: Red) {
     }
 
     function cronCheckJob(msg: any, node: Node, config: any) {
-        let pureLink = new DysonPureLink(config.username, config.password, 'DE');
+        let pureLink = new DysonPurelink(config.username, config.password);
         pureLink.getDevices().then(devices => {
             if (!Array.isArray(devices) || devices.length === 0) {
                 node.log('No devices found')

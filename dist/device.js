@@ -201,6 +201,7 @@ var Device = /** @class */ (function (_super) {
         this.username = decrypted.serial;
     };
     Device.prototype._requestCurrentState = function () {
+        console.log(this.client);
         this.client.publish(this._getCommandTopic(), JSON.stringify({
             msg: 'REQUEST-CURRENT-STATE',
             time: new Date().toISOString()

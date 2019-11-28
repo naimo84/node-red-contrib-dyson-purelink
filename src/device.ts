@@ -4,6 +4,8 @@ const decrypt = require('./decrypt')
 const debugdevice = require('debug')('dyson/device')
 
 export class Device extends EventEmitter {
+  client: any;
+  
   constructor (deviceInfo) {
     super()
 
@@ -209,6 +211,7 @@ export class Device extends EventEmitter {
   }
 
   _requestCurrentState () {
+    console.log(this.client)
     this.client.publish(this._getCommandTopic(), JSON.stringify({
       msg: 'REQUEST-CURRENT-STATE',
       time: new Date().toISOString()
