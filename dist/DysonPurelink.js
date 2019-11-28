@@ -62,4 +62,3 @@ var DysonPurelink = /** @class */ (function () {
     return DysonPurelink;
 }());
 exports.DysonPurelink = DysonPurelink;
-module.exports = DysonPurelink;

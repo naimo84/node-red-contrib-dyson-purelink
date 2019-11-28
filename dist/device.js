@@ -225,4 +225,3 @@ var Device = /** @class */ (function (_super) {
     return Device;
 }(EventEmitter));
 exports.Device = Device;
-module.exports = Device;

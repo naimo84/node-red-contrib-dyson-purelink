@@ -1,17 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var lodash_1 = require("lodash");
 var DysonPurelink_1 = require("./DysonPurelink");
 module.exports = function (RED) {
     function sensorNode(config) {
-        var _this = this;
         RED.nodes.createNode(this, config);
         var configNode = RED.nodes.getNode(config.confignode);
         var node = this;
         this.config = configNode;
         try {
             node.on('input', function (msg) {
-                lodash_1.debounce(function () { return cronCheckJob.bind(null, msg, _this, _this.config); }, 2000);
+                cronCheckJob(msg, node, node.config);
             });
         }
         catch (err) {

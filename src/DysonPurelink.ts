@@ -26,7 +26,7 @@ export class DysonPurelink {
         // Create devices from cloudDevices
         cloudDevices.forEach(deviceInfo => {
           const device = new Device(deviceInfo)
-
+          
           // Update devices with network info
           if (this._networkDevices.has(device.serial)) {
             const networkDevice = this._networkDevices.get(device.serial)
@@ -42,7 +42,7 @@ export class DysonPurelink {
     })
   }
 
-  _findNetworkDevices () {
+  _findNetworkDevices() {
     bonjour.find({ type: 'dyson_mqtt' }, (service) => {
       let serial = service.name
       let mqttPrefix = '475'
@@ -72,5 +72,3 @@ export class DysonPurelink {
     })
   }
 }
-
-module.exports = DysonPurelink

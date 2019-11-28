@@ -56,7 +56,11 @@
     "cloneextend": "0.0.3",
     "lodash": "^4.17.15",
     "crypto": "^1.0.1",
-    "debug": "^4.1.1"
+    "debug": "^4.1.1",
+    "bonjour": "3.5.0",
+    "mqtt": "3.0.0",
+    "events": "^3.0.0",
+    "request-promise-native": "1.0.8"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149",

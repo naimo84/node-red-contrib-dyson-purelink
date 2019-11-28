@@ -12,7 +12,7 @@ module.exports = function (RED: Red) {
 
         try {
             node.on('input', (msg) => {
-                debounce(() => cronCheckJob(msg, this, this.config), 2000);
+                       cronCheckJob( msg, node, node.config);
             });
         }
         catch (err) {

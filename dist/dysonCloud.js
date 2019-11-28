@@ -53,4 +53,3 @@ var DysonCloud = /** @class */ (function () {
 }());
 exports.DysonCloud = DysonCloud;
 ;
-module.exports = DysonCloud;

@@ -59,4 +59,3 @@ export class DysonCloud {
 
 };
 
-module.exports = DysonCloud;
