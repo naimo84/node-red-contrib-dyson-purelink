@@ -1,5 +1,6 @@
 
 import { Red, Node } from 'node-red';
+import { debounce } from "lodash";
 var DysonPureLink = require('dyson-purelink')
 
 module.exports = function (RED: Red) {
@@ -11,7 +12,7 @@ module.exports = function (RED: Red) {
 
         try {
             node.on('input', (msg) => {
-                cronCheckJob(msg, this, this.config);
+                debounce(() => cronCheckJob(msg, this, this.config), 2000);
             });
         }
         catch (err) {

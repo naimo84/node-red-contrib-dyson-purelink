@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var lodash_1 = require("lodash");
 var DysonPureLink = require('dyson-purelink');
 module.exports = function (RED) {
     function sensorNode(config) {
@@ -10,7 +11,7 @@ module.exports = function (RED) {
         this.config = configNode;
         try {
             node.on('input', function (msg) {
-                cronCheckJob(msg, _this, _this.config);
+                lodash_1.debounce(function () { return cronCheckJob(msg, _this, _this.config); }, 2000);
             });
         }
         catch (err) {
