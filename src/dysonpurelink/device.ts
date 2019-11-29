@@ -1,12 +1,37 @@
-const mqtt = require('mqtt')
-const EventEmitter = require('events')
-const decrypt = require('./decrypt')
+
+
+import { decryptCredentials } from './decrypt';
+import { EventEmitter } from 'events';
+import { connect, Client } from "mqtt";
 const debugdevice = require('debug')('dyson/device')
 
 export class Device extends EventEmitter {
-  client: any;
-  
-  constructor (deviceInfo) {
+  client: Client;
+  password: any;
+  username: any;
+  ip: any;
+  url: any;
+  name: any;
+  port: any;
+  serial: any;
+  sensitivity: any;
+  _MQTTPrefix: string;
+  _deviceInfo: any;
+  _apiV2018: any;
+  options: {
+    keepalive: number;
+    clientId: string;
+    clean: boolean;
+    reconnectPeriod: number;
+    connectTimeout: number;
+    username: any;
+    password: any;
+    protocolId: string,
+    protocolVersion: number,
+    rejectUnauthorized: boolean;
+  };
+
+  constructor(deviceInfo) {
     super()
 
     this.password = null
@@ -33,7 +58,7 @@ export class Device extends EventEmitter {
     this._decryptCredentials()
   }
 
-  updateNetworkInfo (info) {
+  updateNetworkInfo(info) {
     this.ip = info.ip
     this.url = 'mqtt://' + this.ip
     this.name = info.name
@@ -44,7 +69,7 @@ export class Device extends EventEmitter {
     this._connect()
   }
 
-  getTemperature () {
+  getTemperature() {
     return new Promise((resolve, reject) => {
       this.once('sensor', (json) => {
         const temperature = parseFloat(((parseInt(json.data.tact, 10) / 10) - 273.15).toFixed(2))
@@ -54,7 +79,7 @@ export class Device extends EventEmitter {
     })
   }
 
-  getRelativeHumidity () {
+  getRelativeHumidity() {
     return new Promise((resolve, reject) => {
       this.once('sensor', (json) => {
         const relativeHumidity = parseInt(json.data.hact)
@@ -64,7 +89,7 @@ export class Device extends EventEmitter {
     })
   }
 
-  getAirQuality () {
+  getAirQuality() {
     return new Promise((resolve, reject) => {
       this.once('sensor', (json) => {
         let dustValue = Number.parseInt(json.data.pact || json.data.pm10)
@@ -83,11 +108,11 @@ export class Device extends EventEmitter {
     })
   }
 
-  getFanStatus () {
+  getFanStatus() {
     return new Promise((resolve, reject) => {
       this.once('state', (json) => {
-        const fpwr = this._apiV2018?json['product-state']['fmod']:json['product-state']['fpwr']
-        const isOn = this._apiV2018?(fpwr === 'FAN'):(fpwr === 'ON')
+        const fpwr = this._apiV2018 ? json['product-state']['fmod'] : json['product-state']['fpwr']
+        const isOn = this._apiV2018 ? (fpwr === 'FAN') : (fpwr === 'ON')
 
         resolve(isOn)
       })
@@ -95,7 +120,7 @@ export class Device extends EventEmitter {
     })
   }
 
-  getFanSpeed () {
+  getFanSpeed() {
     return new Promise((resolve, reject) => {
       this.once('state', (json) => {
         const fnsp = json['product-state']['fnsp']
@@ -106,7 +131,7 @@ export class Device extends EventEmitter {
     })
   }
 
-  getAutoOnStatus () {
+  getAutoOnStatus() {
     return new Promise((resolve, reject) => {
       this.once('state', (json) => {
         const isOn = (json['product-state']['auto'] === 'ON')
@@ -116,7 +141,7 @@ export class Device extends EventEmitter {
     })
   }
 
-  getRotationStatus () {
+  getRotationStatus() {
     return new Promise((resolve, reject) => {
       this.once('state', (json) => {
         const oson = json['product-state']['oson']
@@ -127,44 +152,44 @@ export class Device extends EventEmitter {
     })
   }
 
-  turnOff () {
+  turnOff() {
     return this.setFan(false)
   }
 
-  turnOn () {
+  turnOn() {
     return this.setFan(true)
   }
 
-  setFan (value) {
-    const data = !this._apiV2018?{fpwr:value?'ON':'OFF'}:{fmod:value?'FAN':'OFF'}
+  setFan(value) {
+    const data = !this._apiV2018 ? { fpwr: value ? 'ON' : 'OFF' } : { fmod: value ? 'FAN' : 'OFF' }
     this._setStatus(data)
     return this.getFanStatus()
   }
 
-  setFanSpeed (value) {
+  setFanSpeed(value) {
     const fnsp = Math.round(value / 10)
     this._setStatus({ fnsp: this._apiV2018 ? "000" + fnsp : fnsp })
     return this.getFanSpeed()
   }
 
-  setAuto (value) {
-    const data = this._apiV2018 ? { auto:value?'ON':'OFF'} : { fmod:value?'AUTO':'OFF'}
+  setAuto(value) {
+    const data = this._apiV2018 ? { auto: value ? 'ON' : 'OFF' } : { fmod: value ? 'AUTO' : 'OFF' }
     this._setStatus(data)
     return this.getAutoOnStatus()
   }
 
-  setRotation (value) {
+  setRotation(value) {
     const oson = value ? 'ON' : 'OFF'
     this._setStatus({ oson })
     return this.getRotationStatus()
   }
 
-  _connect () {
+  _connect() {
     this.options = {
       keepalive: 10,
       clientId: 'dyson_' + Math.random().toString(16),
-      // protocolId: 'MQTT',
-      // protocolVersion: 4,
+      protocolId: 'MQTT',
+      protocolVersion: 4,
       clean: true,
       reconnectPeriod: 1000,
       connectTimeout: 30 * 1000,
@@ -182,7 +207,7 @@ export class Device extends EventEmitter {
 
     debugdevice(`MQTT (${this._MQTTPrefix}): connecting to ${this.url}`)
 
-    this.client = mqtt.connect(this.url, this.options)
+    this.client = connect(this.url, this.options)
 
     this.client.on('connect', () => {
       debugdevice(`MQTT: connected to ${this.url}`)
@@ -190,7 +215,7 @@ export class Device extends EventEmitter {
     })
 
     this.client.on('message', (topic, message) => {
-      let json = JSON.parse(message)
+      let json = JSON.parse(message.toString())
       debugdevice(`MQTT: got message ${message}`)
 
       if (json !== null) {
@@ -204,24 +229,24 @@ export class Device extends EventEmitter {
     })
   }
 
-  _decryptCredentials () {
-    var decrypted = JSON.parse(decrypt(this._deviceInfo.LocalCredentials))
+  _decryptCredentials() {
+    var decrypted = JSON.parse(decryptCredentials(this._deviceInfo.LocalCredentials))
     this.password = decrypted.apPasswordHash
     this.username = decrypted.serial
   }
 
-  _requestCurrentState () {
-    console.log(this.client)
+  _requestCurrentState() {
+    debugdevice(`MQTT: ${this.client}`)
     this.client.publish(this._getCommandTopic(), JSON.stringify({
       msg: 'REQUEST-CURRENT-STATE',
       time: new Date().toISOString()
     }))
   }
 
-  _setStatus (data) {
+  _setStatus(data) {
     const message = JSON.stringify({
       msg: 'STATE-SET',
-      "mode-reason":"LAPP",
+      "mode-reason": "LAPP",
       time: new Date().toISOString(),
       data
     })
@@ -232,11 +257,11 @@ export class Device extends EventEmitter {
     )
   }
 
-  _getCurrentStatusTopic () {
+  _getCurrentStatusTopic() {
     return `${this._MQTTPrefix}/${this.username}/status/current`
   }
 
-  _getCommandTopic () {
+  _getCommandTopic() {
     return `${this._MQTTPrefix}/${this.username}/command`
   }
 }

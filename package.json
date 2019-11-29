@@ -64,8 +64,10 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149",
+    "@types/mqtt": "^2.5.0",
     "@types/node": "^12.12.9",
     "@types/node-red": "^0.20.0",
+    "@types/request-promise-native": "^1.0.17",
     "commitlint": "^8.2.0",
     "gulp": "^4.0.2",
     "gulp-typescript": "^5.0.1",

@@ -1,18 +1,19 @@
 
 import { Red, Node } from 'node-red';
-import { debounce } from "lodash";
-import { DysonPurelink } from "./DysonPurelink";
+import { DysonPurelink } from "./dysonpurelink/DysonPurelink";
+import { DysonNode } from './dyson-status';
 
 module.exports = function (RED: Red) {
     function sensorNode(config: any) {
         RED.nodes.createNode(this, config);
         let configNode = RED.nodes.getNode(config.confignode);
         let node = this;
-        this.config = configNode;
-
+        node.config = configNode;
+        node.device = config.device;
+      
         try {
             node.on('input', (msg) => {
-                       cronCheckJob( msg, node, node.config);
+                action(msg, node, node.config);
             });
         }
         catch (err) {
@@ -21,32 +22,24 @@ module.exports = function (RED: Red) {
         }
     }
 
-    function cronCheckJob(msg: any, node: Node, config: any) {
-        let pureLink = new DysonPurelink(config.username, config.password);
-        pureLink.getDevices().then(devices => {
-            if (!Array.isArray(devices) || devices.length === 0) {
-                node.log('No devices found')
-                return
-            }
-
+    function action(msg: any, node: DysonNode, config: any) {
+        let device = node.device;
+        if (device) {
             switch (msg.action) {
                 case 'turnOn':
-                    devices[0].turnOn();
+                    device.turnOn();
                     break;
                 case 'turnOff':
-                    devices[0].turnOff();
+                    device.turnOff();
                     break;
                 case 'setRotation':
-                    devices[0].setRotation(msg.rotation).then(t => node.send({ payload: t }))
+                    device.setRotation(msg.rotation).then(t => node.send({ payload: t }))
                     break;
                 case 'setFanSpeed':
-                    devices[0].setFanSpeed(msg.speed).then(t => node.send({ payload: t }))
+                    device.setFanSpeed(msg.speed).then(t => node.send({ payload: t }))
                     break;
             }
-
-
-
-        }).catch(err => node.error(err))
+        }
     }
 
     RED.nodes.registerType("dyson-action", sensorNode);

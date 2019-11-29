@@ -13,9 +13,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var mqtt = require('mqtt');
-var EventEmitter = require('events');
-var decrypt = require('./decrypt');
+var decrypt_1 = require("./decrypt");
+var events_1 = require("events");
+var mqtt_1 = require("mqtt");
 var debugdevice = require('debug')('dyson/device');
 var Device = /** @class */ (function (_super) {
     __extends(Device, _super);
@@ -162,8 +162,8 @@ var Device = /** @class */ (function (_super) {
         this.options = {
             keepalive: 10,
             clientId: 'dyson_' + Math.random().toString(16),
-            // protocolId: 'MQTT',
-            // protocolVersion: 4,
+            protocolId: 'MQTT',
+            protocolVersion: 4,
             clean: true,
             reconnectPeriod: 1000,
             connectTimeout: 30 * 1000,
@@ -177,13 +177,13 @@ var Device = /** @class */ (function (_super) {
             this.options.protocolId = 'MQIsdp';
         }
         debugdevice("MQTT (" + this._MQTTPrefix + "): connecting to " + this.url);
-        this.client = mqtt.connect(this.url, this.options);
+        this.client = mqtt_1.connect(this.url, this.options);
         this.client.on('connect', function () {
             debugdevice("MQTT: connected to " + _this.url);
             _this.client.subscribe(_this._getCurrentStatusTopic());
         });
         this.client.on('message', function (topic, message) {
-            var json = JSON.parse(message);
+            var json = JSON.parse(message.toString());
             debugdevice("MQTT: got message " + message);
             if (json !== null) {
                 if (json.msg === 'ENVIRONMENTAL-CURRENT-SENSOR-DATA') {
@@ -196,7 +196,7 @@ var Device = /** @class */ (function (_super) {
         });
     };
     Device.prototype._decryptCredentials = function () {
-        var decrypted = JSON.parse(decrypt(this._deviceInfo.LocalCredentials));
+        var decrypted = JSON.parse(decrypt_1.decryptCredentials(this._deviceInfo.LocalCredentials));
         this.password = decrypted.apPasswordHash;
         this.username = decrypted.serial;
     };
@@ -223,5 +223,5 @@ var Device = /** @class */ (function (_super) {
         return this._MQTTPrefix + "/" + this.username + "/command";
     };
     return Device;
-}(EventEmitter));
+}(events_1.EventEmitter));
 exports.Device = Device;

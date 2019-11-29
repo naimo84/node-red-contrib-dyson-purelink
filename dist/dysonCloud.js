@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var request = require('request-promise-native');
+var request_promise_native_1 = require("request-promise-native");
 var DysonCloud = /** @class */ (function () {
     function DysonCloud() {
         this.api = 'https://api.cp.dyson.com';
@@ -23,7 +23,7 @@ var DysonCloud = /** @class */ (function () {
             },
             json: true
         };
-        return request(options).then(function (info) {
+        return request_promise_native_1.post(options).then(function (info) {
             _this.auth = {
                 account: info.Account,
                 password: info.Password
@@ -47,7 +47,7 @@ var DysonCloud = /** @class */ (function () {
             },
             json: true
         };
-        return request(options);
+        return request_promise_native_1.get(options);
     };
     return DysonCloud;
 }());

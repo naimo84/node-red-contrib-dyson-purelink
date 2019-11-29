@@ -1,18 +1,22 @@
 
 import { Red, Node } from 'node-red';
-import { debounce } from "lodash";
-import { DysonPurelink } from "./DysonPurelink";
+
+
+export interface DysonNode extends Node {
+    device: any;
+}
 
 module.exports = function (RED: Red) {
     function sensorNode(config: any) {
         RED.nodes.createNode(this, config);
         let configNode = RED.nodes.getNode(config.confignode);
         let node = this;
-        this.config = configNode;       
+        node.config = configNode;
+        node.device = config.device;
 
         try {
             node.on('input', (msg) => {
-                cronCheckJob( msg, node, node.config);
+                getStatus(msg, node, node.config);
             });
         }
         catch (err) {
@@ -21,41 +25,33 @@ module.exports = function (RED: Red) {
         }
     }
 
-    function cronCheckJob(msg: any, node: Node, config: any) {
-        let pureLink = new DysonPurelink(config.username, config.password);
-        pureLink.getDevices().then(devices => {
-            if (!Array.isArray(devices) || devices.length === 0) {
-                node.log('No devices found')
-                return
-            }
-
+    function getStatus(msg: any, node: DysonNode, config: any) {
+        let device = node.device;
+        if (device) {
             switch (msg.action) {
                 case 'getTemperature':
-                    devices[0].getTemperature().then(t => node.send({ payload: t }))
+                    device.getTemperature().then(t => node.send({ payload: t }))
                     break;
                 case 'getAirQuality':
-                    devices[0].getAirQuality().then(t => node.send({ payload: t }))
+                    device.getAirQuality().then(t => node.send({ payload: t }))
                     break;
                 case 'getRelativeHumidity':
-                    devices[0].getRelativeHumidity().then(t => node.send({ payload: t }))
+                    device.getRelativeHumidity().then(t => node.send({ payload: t }))
                     break;
                 case 'getFanStatus':
-                    devices[0].getFanStatus().then(t => node.send({ payload: t }))
+                    device.getFanStatus().then(t => node.send({ payload: t }))
                     break;
                 case 'getFanSpeed':
-                    devices[0].getFanSpeed().then(t => node.send({ payload: t }))
+                    device.getFanSpeed().then(t => node.send({ payload: t }))
                     break;
                 case 'getRotationStatus':
-                    devices[0].getRotationStatus().then(t => node.send({ payload: t }))
+                    device.getRotationStatus().then(t => node.send({ payload: t }))
                     break;
                 case 'getAutoOnStatus':
-                    devices[0].getAutoOnStatus().then(t => node.send({ payload: t }))
+                    device.getAutoOnStatus().then(t => node.send({ payload: t }))
                     break;
             }
-
-
-
-        }).catch(err => node.error(err))
+        }
     }
 
     RED.nodes.registerType("dyson-status", sensorNode);

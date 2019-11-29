@@ -1,4 +1,4 @@
-var request = require('request-promise-native');
+import { get, post } from 'request-promise-native';
 
 export class DysonCloud {
     api: string;
@@ -9,7 +9,7 @@ export class DysonCloud {
         this.auth = {}
     }
 
-    authenticate(email, password, country) {
+    async authenticate(email, password, country) {
         if (!country) {
             country = 'US'
         }
@@ -27,13 +27,12 @@ export class DysonCloud {
             json: true
         }
 
-        return request(options).then(info => {
-            this.auth = {
-                account: info.Account,
-                password: info.Password
-            }
-            return this.auth
-        })
+        const info = await post(options);
+        this.auth = {
+            account: info.Account,
+            password: info.Password
+        };
+        return this.auth;
     }
 
     logout() {
@@ -54,7 +53,7 @@ export class DysonCloud {
             json: true
         }
 
-        return request(options);
+        return get(options);
     }
 
 };

@@ -3,25 +3,29 @@
         .nodes
         .registerType('dyson-config', {
             category: 'config',
-            defaults: {                
+            defaults: {
                 username: {
                     value: ""
                 },
                 password: {
                     value: ""
-                }              
+                },
+                country: {
+                    value: ""
+                }
             },
             label: function () {
                 if (this.name) {
                     return this.name;
                 }
                 return "Config";
-            }            
+            }
+           
         });
 </script>
 
 <script type="text/x-red" data-template-name="dyson-config">
-    
+
     <div class="form-row">
         <label for="node-config-input-username" style="width:160px !important">
             <i class="fa fa-user"></i>
@@ -34,6 +38,11 @@
             <span>Password:</span></label>
         <input type="password" id="node-config-input-password" placeholder="" style="width:280px !important">
     </div>
+    <div class="form-row">
+        <label for="node-config-input-country" style="width:160px !important">
+            <i class="fa fa-key"></i>
+            <span>Country:</span></label>
+        <input type="text" id="node-config-input-country" placeholder="" style="width:280px !important">
     </div>
    
 </script>

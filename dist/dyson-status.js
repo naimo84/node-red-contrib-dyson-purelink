@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var DysonPurelink_1 = require("./DysonPurelink");
 module.exports = function (RED) {
     function sensorNode(config) {
         RED.nodes.createNode(this, config);
         var configNode = RED.nodes.getNode(config.confignode);
         var node = this;
-        this.config = configNode;
+        node.config = configNode;
+        node.device = config.device;
         try {
             node.on('input', function (msg) {
-                cronCheckJob(msg, node, node.config);
+                getStatus(msg, node, node.config);
             });
         }
         catch (err) {
@@ -17,37 +17,33 @@ module.exports = function (RED) {
             node.status({ fill: "red", shape: "ring", text: err.message });
         }
     }
-    function cronCheckJob(msg, node, config) {
-        var pureLink = new DysonPurelink_1.DysonPurelink(config.username, config.password);
-        pureLink.getDevices().then(function (devices) {
-            if (!Array.isArray(devices) || devices.length === 0) {
-                node.log('No devices found');
-                return;
-            }
+    function getStatus(msg, node, config) {
+        var device = node.device;
+        if (device) {
             switch (msg.action) {
                 case 'getTemperature':
-                    devices[0].getTemperature().then(function (t) { return node.send({ payload: t }); });
+                    device.getTemperature().then(function (t) { return node.send({ payload: t }); });
                     break;
                 case 'getAirQuality':
-                    devices[0].getAirQuality().then(function (t) { return node.send({ payload: t }); });
+                    device.getAirQuality().then(function (t) { return node.send({ payload: t }); });
                     break;
                 case 'getRelativeHumidity':
-                    devices[0].getRelativeHumidity().then(function (t) { return node.send({ payload: t }); });
+                    device.getRelativeHumidity().then(function (t) { return node.send({ payload: t }); });
                     break;
                 case 'getFanStatus':
-                    devices[0].getFanStatus().then(function (t) { return node.send({ payload: t }); });
+                    device.getFanStatus().then(function (t) { return node.send({ payload: t }); });
                     break;
                 case 'getFanSpeed':
-                    devices[0].getFanSpeed().then(function (t) { return node.send({ payload: t }); });
+                    device.getFanSpeed().then(function (t) { return node.send({ payload: t }); });
                     break;
                 case 'getRotationStatus':
-                    devices[0].getRotationStatus().then(function (t) { return node.send({ payload: t }); });
+                    device.getRotationStatus().then(function (t) { return node.send({ payload: t }); });
                     break;
                 case 'getAutoOnStatus':
-                    devices[0].getAutoOnStatus().then(function (t) { return node.send({ payload: t }); });
+                    device.getAutoOnStatus().then(function (t) { return node.send({ payload: t }); });
                     break;
             }
-        }).catch(function (err) { return node.error(err); });
+        }
     }
     RED.nodes.registerType("dyson-status", sensorNode);
 };

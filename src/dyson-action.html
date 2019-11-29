@@ -7,10 +7,13 @@
                 confignode: {
                     value: "",
                     type: "dyson-config"
-                }              
+                },
+                device:{
+                    value:""
+                }
             },
             inputs: 1,
-            outputs: 1,          
+            outputs: 1,
             color: "#E7AE24",
             label: function () {
                 if (this.name) {
@@ -21,7 +24,43 @@
                 return "action";
             },
             icon: "calendar.png",
-            paletteLabel: "action"          
+            paletteLabel: "action",
+            oneditprepare: function () {
+                var node = this;
+
+                $("#node-config-lookup-device").click(function () {
+                    $("#node-config-lookup-device-icon").removeClass('fa-search');
+                    $("#node-config-lookup-device-icon").addClass('spinner');
+                    $("#node-config-lookup-device").addClass('disabled');
+
+                    $.getJSON('dysonDevices/' + node.confignode, function (data) {
+                        $("#node-config-lookup-device-icon").addClass('fa-search');
+                        $("#node-config-lookup-device-icon").removeClass('spinner');
+                        $("#node-config-lookup-device").removeClass('disabled');
+                        var dataArray = [];
+                        $.each(data, function (i, element) {
+                            dataArray.push(element);
+                        });
+                        $("#node-input-device").autocomplete({
+                            source: dataArray,
+                            minLength: 0,                           
+                            create: function () {
+                                $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+                                    return $("<li>")
+                                        .append("<span>" + item.name + "</span>")
+                                        .appendTo(ul);
+                                };
+                            },
+                            select: function (event, ui) {       
+                                console.log(ui)     
+                                node.device=ui.item;                  
+                                $('#node-input-device').val(ui.item.name);                               
+                                return false;
+                            }
+                        }).autocomplete("search", "");
+                    });
+                });
+            }
         });
 </script>
 
@@ -30,8 +69,15 @@
         <label for="node-input-confignode"><i class="fa fa-globe"></i> <span>Config</span></label>
         <input type="text" id="node-input-confignode">
     </div>  
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-barcode" aria-hidden="true"></i> Device</label>
+        <input type="text" id="node-input-device" style="width:60%;" placeholder="">
+        <a id="node-config-lookup-device" class="btn">
+            <i id="node-config-lookup-device-icon" class="fa fa-search"></i>
+        </a>
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="dyson-action">
-   
+
 </script>
