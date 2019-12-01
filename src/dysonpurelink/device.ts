@@ -66,7 +66,7 @@ export class Device extends EventEmitter {
     this._MQTTPrefix = info.mqttPrefix || '475'
 
     // debugdevice('updateNetworkInfo', JSON.stringify(info))
-    this.connect()
+    
   }
 
   getTemperature() {
@@ -184,14 +184,14 @@ export class Device extends EventEmitter {
     return this.getRotationStatus()
   }
 
-  connect() {
+  connect(clientId) {
     this.options = {
       keepalive: 10,
-      clientId: 'dyson_' + Math.random().toString(16),
+      clientId: clientId,
       protocolId: 'MQTT',
       protocolVersion: 4,
       clean: true,
-      reconnectPeriod: 1000,
+      reconnectPeriod: 10000,
       connectTimeout: 30 * 1000,
       username: this.username,
       password: this.password,
@@ -214,6 +214,11 @@ export class Device extends EventEmitter {
       this.client.subscribe(this._getCurrentStatusTopic())
     })
 
+    this.client.on('error', (err) => {
+      console.error(`MQTT: error ${err}`)    
+      this.client.reconnect();
+    })
+
     this.client.on('message', (topic, message) => {
       let json = JSON.parse(message.toString())
       debugdevice(`MQTT: got message ${message}`)
@@ -227,6 +232,10 @@ export class Device extends EventEmitter {
         }
       }
     })
+  }
+
+  disconnect(){
+    this.client.end();
   }
 
   _decryptCredentials() {

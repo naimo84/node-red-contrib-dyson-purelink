@@ -48,7 +48,6 @@ var Device = /** @class */ (function (_super) {
         this.port = info.port;
         this._MQTTPrefix = info.mqttPrefix || '475';
         // debugdevice('updateNetworkInfo', JSON.stringify(info))
-        this.connect();
     };
     Device.prototype.getTemperature = function () {
         var _this = this;
@@ -157,15 +156,15 @@ var Device = /** @class */ (function (_super) {
         this._setStatus({ oson: oson });
         return this.getRotationStatus();
     };
-    Device.prototype.connect = function () {
+    Device.prototype.connect = function (clientId) {
         var _this = this;
         this.options = {
             keepalive: 10,
-            clientId: 'dyson_' + Math.random().toString(16),
+            clientId: clientId,
             protocolId: 'MQTT',
             protocolVersion: 4,
             clean: true,
-            reconnectPeriod: 1000,
+            reconnectPeriod: 10000,
             connectTimeout: 30 * 1000,
             username: this.username,
             password: this.password,
@@ -182,6 +181,10 @@ var Device = /** @class */ (function (_super) {
             debugdevice("MQTT: connected to " + _this.url);
             _this.client.subscribe(_this._getCurrentStatusTopic());
         });
+        this.client.on('error', function (err) {
+            console.error("MQTT: error " + err);
+            _this.client.reconnect();
+        });
         this.client.on('message', function (topic, message) {
             var json = JSON.parse(message.toString());
             debugdevice("MQTT: got message " + message);
@@ -194,6 +197,9 @@ var Device = /** @class */ (function (_super) {
                 }
             }
         });
+    };
+    Device.prototype.disconnect = function () {
+        this.client.end();
     };
     Device.prototype._decryptCredentials = function () {
         var decrypted = JSON.parse(decrypt_1.decryptCredentials(this._deviceInfo.LocalCredentials));

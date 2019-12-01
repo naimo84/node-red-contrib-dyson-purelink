@@ -8,11 +8,17 @@
                     value: "",
                     type: "dyson-config"
                 },
-                device:{
-                    value:""
+                device: {
+                    value: ""
                 },
-                deviceserial:{
-                    value:""
+                deviceserial: {
+                    value: ""
+                },
+                action: {
+                    value: ""
+                },
+                value: {
+                    value: ""
                 }
             },
             inputs: 1,
@@ -24,10 +30,10 @@
                 } else if (this.confignode.name) {
                     return this.confignode.name;
                 }
-                return "link";
+                return "dyson link";
             },
-            icon: "calendar.png",
-            paletteLabel: "link",
+            icon: "ventilator.png",
+            paletteLabel: "dyson link",
             oneditprepare: function () {
                 var node = this;
 
@@ -54,8 +60,8 @@
                                         .appendTo(ul);
                                 };
                             },
-                            select: function (event, ui) {  
-                               
+                            select: function (event, ui) {
+
                                 $('#node-input-device').val(ui.item.Name);
                                 $('#node-input-deviceserial').val(ui.item.Serial);
                                 return false;
@@ -63,6 +69,19 @@
                         }).autocomplete("search", "");
                     });
                 });
+
+                $('#node-input-action').change(function () {
+                    var value = $('#node-input-action').val()
+                    if(value === 'setRotation' || value ==='setFanSpeed'){
+                        $('#node-input-value').parent().show();
+                        $('#node-input-value').parent().show();
+                    }else{
+                        $('#node-input-value').parent().hide();
+                        $('#node-input-value').parent().hide();
+                    }
+                    $('.form-row.toggle').hide()
+                    $('.form-row.' + value).show()
+                })
             }
         });
 </script>
@@ -80,8 +99,28 @@
             <i id="node-config-lookup-device-icon" class="fa fa-search"></i>
         </a>
     </div>
+    <div class="form-row">
+        <label for="node-input-action"><i class="fa fa-tag"></i> Action</label>
+		<select type="text" id="node-input-action" style="display: inline-block; width: 70%;" >
+                <option value="getTemperature">getTemperature</option>
+                <option value="getAirQuality">getAirQuality</option>
+                <option value="getRelativeHumidity">getRelativeHumidity</option>
+                <option value="getFanStatus">getFanStatus</option>
+                <option value="getFanSpeed">getFanSpeed</option>
+                <option value="getRotationStatus">getRotationStatus</option>
+                <option value="getAutoOnStatus">getAutoOnStatus</option>
+                <option value="turnOn">turnOn</option>
+                <option value="turnOff">turnOff</option>
+                <option value="setRotation">setRotation</option>
+                <option value="setFanSpeed">setFanSpeed</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-value"><i class="fa fa-barcode" aria-hidden="true"></i> Value</label>
+        <input type="text" id="node-input-value" style="width:70%;" placeholder="">
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="dyson-link">
-
+    <span style="font-size:8px"><a target="_blank" href="/icons/set/fan">Ventilator icon</a> icon by <a target="_blank" href="https://icons8.de">Icons8</a></span>
 </script>
