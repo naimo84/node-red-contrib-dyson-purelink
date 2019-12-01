@@ -10,6 +10,9 @@
                 },
                 device:{
                     value:""
+                },
+                deviceserial:{
+                    value:""
                 }
             },
             inputs: 1,
@@ -52,9 +55,8 @@
                                 };
                             },
                             select: function (event, ui) {       
-                                console.log(ui)     
-                                node.device=ui.item;                  
-                                $('#node-input-device').val(ui.item.name);                               
+                                $('#node-input-device').val(ui.item.name);
+                                $('#node-input-deviceserial').val(ui.item.serial);                         
                                 return false;
                             }
                         }).autocomplete("search", "");
@@ -72,6 +74,7 @@
     <div class="form-row">
         <label for="node-input-device"><i class="fa fa-barcode" aria-hidden="true"></i> Device</label>
         <input type="text" id="node-input-device" style="width:60%;" placeholder="">
+        <input type="hidden" id="node-input-deviceserial">
         <a id="node-config-lookup-device" class="btn">
             <i id="node-config-lookup-device-icon" class="fa fa-search"></i>
         </a>

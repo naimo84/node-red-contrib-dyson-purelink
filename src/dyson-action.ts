@@ -10,6 +10,19 @@ module.exports = function (RED: Red) {
         let node = this;
         node.config = configNode;
         node.device = config.device;
+        node.deviceserial = config.deviceserial;
+
+        let pureLink = new DysonPurelink(node.config.username, node.config.password, 'DE');
+        pureLink.getDevices().then(devices => {
+            if (!Array.isArray(devices) || devices.length === 0) {
+                return
+            }
+            for (let device of devices) {
+                if(device.serial ===  node.deviceserial){
+                    node.devicelink=device;
+                }
+            }
+        }).catch(err => console.error(err));
       
         try {
             node.on('input', (msg) => {
@@ -23,7 +36,7 @@ module.exports = function (RED: Red) {
     }
 
     function action(msg: any, node: DysonNode, config: any) {
-        let device = node.device;
+        let device = node.devicelink;
         if (device) {
             switch (msg.action) {
                 case 'turnOn':

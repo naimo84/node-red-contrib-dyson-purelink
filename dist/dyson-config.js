@@ -18,7 +18,12 @@ module.exports = function (RED) {
             if (!Array.isArray(devices) || devices.length === 0) {
                 return;
             }
-            res.json(devices);
+            var ret = [];
+            for (var _i = 0, devices_1 = devices; _i < devices_1.length; _i++) {
+                var device = devices_1[_i];
+                ret.push(device._deviceInfo);
+            }
+            res.json(ret);
         }).catch(function (err) { return console.error(err); });
     });
     RED.nodes.registerType("dyson-config", config);

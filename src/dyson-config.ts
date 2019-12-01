@@ -1,4 +1,5 @@
 import { DysonPurelink } from "./dysonpurelink/DysonPurelink";
+import { filter } from "lodash";
 
 module.exports = function (RED: any) {
     function config(config) {
@@ -20,7 +21,11 @@ module.exports = function (RED: any) {
             if (!Array.isArray(devices) || devices.length === 0) {              
                 return
             }
-            res.json(devices);
+            let ret = [];
+            for(let device of devices){
+                ret.push(device._deviceInfo)
+            }
+            res.json(ret);
         }).catch(err => console.error(err));
     });
 
