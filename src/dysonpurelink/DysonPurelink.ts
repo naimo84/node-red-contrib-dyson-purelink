@@ -11,7 +11,7 @@ export class DysonPurelink {
   _dysonCloud: DysonCloud;
   _devices: Map<any, any>;
 
-  constructor (email, password,country) {
+  constructor(email, password, country) {
     this._email = email;
     this._password = password;
     this._country = country;
@@ -19,20 +19,14 @@ export class DysonPurelink {
     this._dysonCloud = new DysonCloud();
     this._devices = new Map();
 
-    this._findNetworkDevices();
+
   }
 
-  getDevices () {
+  getDevices() {
     return this._dysonCloud.authenticate(this._email, this._password, this._country).then(() => {
-      return this._dysonCloud.getCloudDevices().then(cloudDevices => {     
+      return this._dysonCloud.getCloudDevices().then(cloudDevices => {
         cloudDevices.forEach(deviceInfo => {
           const device = new Device(deviceInfo);
-
-          if (this._networkDevices.has(device.serial)) {
-            const networkDevice = this._networkDevices.get(device.serial);
-            device.updateNetworkInfo(networkDevice);
-          }
-
           this._devices.set(device.serial, device);
         });
 
@@ -41,7 +35,7 @@ export class DysonPurelink {
     })
   }
 
-  _findNetworkDevices() {
+  findNetworkDevices(callback) {
     bonjour.find({ type: 'dyson_mqtt' }, (service) => {
       let serial = service.name;
       let mqttPrefix = '475';
@@ -60,14 +54,12 @@ export class DysonPurelink {
         mqttPrefix
       }
 
-      debug(`Got network device: ${networkDevice.serial}`);
+      console.log(`Got network device: ${networkDevice.serial}`);
 
-      // Update devices with network info or push to network collectio
-      if (this._devices.has(networkDevice.serial)) {
-        this._devices.get(networkDevice.serial).updateNetworkInfo(networkDevice);
-      } else {
-        this._networkDevices.set(networkDevice.serial, networkDevice);
-      }
-    })
+      this._networkDevices.set(networkDevice.serial, networkDevice);
+
+      callback(this._networkDevices);
+    });
+
   }
 }

@@ -1,7 +1,7 @@
 <script type="text/javascript">
     RED
         .nodes
-        .registerType('dyson-status', {
+        .registerType('dyson-link', {
             category: 'dyson',
             defaults: {
                 confignode: {
@@ -24,10 +24,10 @@
                 } else if (this.confignode.name) {
                     return this.confignode.name;
                 }
-                return "status";
+                return "link";
             },
             icon: "calendar.png",
-            paletteLabel: "status",
+            paletteLabel: "link",
             oneditprepare: function () {
                 var node = this;
 
@@ -67,7 +67,7 @@
         });
 </script>
 
-<script type="text/x-red" data-template-name="dyson-status">
+<script type="text/x-red" data-template-name="dyson-link">
     <div class="form-row">
         <label for="node-input-confignode"><i class="fa fa-globe"></i> <span>Config</span></label>
         <input type="text" id="node-input-confignode">
@@ -82,6 +82,6 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="dyson-status">
+<script type="text/x-red" data-help-name="dyson-link">
 
 </script>

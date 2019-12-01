@@ -48,7 +48,7 @@ var Device = /** @class */ (function (_super) {
         this.port = info.port;
         this._MQTTPrefix = info.mqttPrefix || '475';
         // debugdevice('updateNetworkInfo', JSON.stringify(info))
-        this._connect();
+        this.connect();
     };
     Device.prototype.getTemperature = function () {
         var _this = this;
@@ -157,7 +157,7 @@ var Device = /** @class */ (function (_super) {
         this._setStatus({ oson: oson });
         return this.getRotationStatus();
     };
-    Device.prototype._connect = function () {
+    Device.prototype.connect = function () {
         var _this = this;
         this.options = {
             keepalive: 10,

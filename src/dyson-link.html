@@ -1,7 +1,7 @@
 <script type="text/javascript">
     RED
         .nodes
-        .registerType('dyson-action', {
+        .registerType('dyson-link', {
             category: 'dyson',
             defaults: {
                 confignode: {
@@ -24,10 +24,10 @@
                 } else if (this.confignode.name) {
                     return this.confignode.name;
                 }
-                return "action";
+                return "link";
             },
             icon: "calendar.png",
-            paletteLabel: "action",
+            paletteLabel: "link",
             oneditprepare: function () {
                 var node = this;
 
@@ -46,17 +46,18 @@
                         });
                         $("#node-input-device").autocomplete({
                             source: dataArray,
-                            minLength: 0,                           
+                            minLength: 0,
                             create: function () {
                                 $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
                                     return $("<li>")
-                                        .append("<span>" + item.name + "</span>")
+                                        .append("<span>" + item.Name + "</span>")
                                         .appendTo(ul);
                                 };
                             },
-                            select: function (event, ui) {       
-                                $('#node-input-device').val(ui.item.name);
-                                $('#node-input-deviceserial').val(ui.item.serial);                         
+                            select: function (event, ui) {  
+                               
+                                $('#node-input-device').val(ui.item.Name);
+                                $('#node-input-deviceserial').val(ui.item.Serial);
                                 return false;
                             }
                         }).autocomplete("search", "");
@@ -66,7 +67,7 @@
         });
 </script>
 
-<script type="text/x-red" data-template-name="dyson-action">
+<script type="text/x-red" data-template-name="dyson-link">
     <div class="form-row">
         <label for="node-input-confignode"><i class="fa fa-globe"></i> <span>Config</span></label>
         <input type="text" id="node-input-confignode">
@@ -81,6 +82,6 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="dyson-action">
+<script type="text/x-red" data-help-name="dyson-link">
 
 </script>

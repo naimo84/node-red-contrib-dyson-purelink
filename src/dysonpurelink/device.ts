@@ -66,7 +66,7 @@ export class Device extends EventEmitter {
     this._MQTTPrefix = info.mqttPrefix || '475'
 
     // debugdevice('updateNetworkInfo', JSON.stringify(info))
-    this._connect()
+    this.connect()
   }
 
   getTemperature() {
@@ -184,7 +184,7 @@ export class Device extends EventEmitter {
     return this.getRotationStatus()
   }
 
-  _connect() {
+  connect() {
     this.options = {
       keepalive: 10,
       clientId: 'dyson_' + Math.random().toString(16),

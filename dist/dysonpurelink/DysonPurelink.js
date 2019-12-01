@@ -12,7 +12,6 @@ var DysonPurelink = /** @class */ (function () {
         this._networkDevices = new Map();
         this._dysonCloud = new dysonCloud_1.DysonCloud();
         this._devices = new Map();
-        this._findNetworkDevices();
     }
     DysonPurelink.prototype.getDevices = function () {
         var _this = this;
@@ -20,17 +19,13 @@ var DysonPurelink = /** @class */ (function () {
             return _this._dysonCloud.getCloudDevices().then(function (cloudDevices) {
                 cloudDevices.forEach(function (deviceInfo) {
                     var device = new device_1.Device(deviceInfo);
-                    if (_this._networkDevices.has(device.serial)) {
-                        var networkDevice = _this._networkDevices.get(device.serial);
-                        device.updateNetworkInfo(networkDevice);
-                    }
                     _this._devices.set(device.serial, device);
                 });
                 return Array.from(_this._devices.values());
             });
         });
     };
-    DysonPurelink.prototype._findNetworkDevices = function () {
+    DysonPurelink.prototype.findNetworkDevices = function (callback) {
         var _this = this;
         bonjour.find({ type: 'dyson_mqtt' }, function (service) {
             var serial = service.name;
@@ -47,14 +42,9 @@ var DysonPurelink = /** @class */ (function () {
                 serial: serial,
                 mqttPrefix: mqttPrefix
             };
-            debug("Got network device: " + networkDevice.serial);
-            // Update devices with network info or push to network collectio
-            if (_this._devices.has(networkDevice.serial)) {
-                _this._devices.get(networkDevice.serial).updateNetworkInfo(networkDevice);
-            }
-            else {
-                _this._networkDevices.set(networkDevice.serial, networkDevice);
-            }
+            console.log("Got network device: " + networkDevice.serial);
+            _this._networkDevices.set(networkDevice.serial, networkDevice);
+            callback(_this._networkDevices);
         });
     };
     return DysonPurelink;

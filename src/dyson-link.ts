@@ -18,16 +18,24 @@ module.exports = function (RED: Red) {
         node.deviceserial = config.deviceserial;
 
         let pureLink = new DysonPurelink(node.config.username, node.config.password, 'DE');
-        pureLink.getDevices().then(devices => {
-            if (!Array.isArray(devices) || devices.length === 0) {
+        pureLink.getDevices().then(cloud_devices => {
+            if (!Array.isArray(cloud_devices) || cloud_devices.length === 0) {
                 return
             }
-            for (let device of devices) {
-                if(device.serial ===  node.deviceserial){
-                    node.devicelink=device;
+            cloud_devices.forEach((cloud_device) => {
+                if (cloud_device.serial === node.deviceserial) {
+                    pureLink.findNetworkDevices((network_devices) => {
+                        network_devices.forEach(network_device => {
+                            if (network_device.serial === node.deviceserial) {
+                                cloud_device.updateNetworkInfo(network_device);
+                                node.devicelink = cloud_device;
+                                node.devicelink.connect();
+                            }
+                        });
+                    });
                 }
-            }
-        }).catch(err => console.error(err));
+            });
+        });
 
         try {
             node.on('input', (msg) => {
@@ -42,7 +50,6 @@ module.exports = function (RED: Red) {
 
     function getStatus(msg: any, node: DysonNode, config: any) {
         let device = node.devicelink;
-       
         if (device) {
             switch (msg.action) {
                 case 'getTemperature':
@@ -66,9 +73,21 @@ module.exports = function (RED: Red) {
                 case 'getAutoOnStatus':
                     device.getAutoOnStatus().then(t => node.send({ payload: t }))
                     break;
+                case 'turnOn':
+                    device.turnOn();
+                    break;
+                case 'turnOff':
+                    device.turnOff();
+                    break;
+                case 'setRotation':
+                    device.setRotation(msg.rotation).then(t => node.send({ payload: t }))
+                    break;
+                case 'setFanSpeed':
+                    device.setFanSpeed(msg.speed).then(t => node.send({ payload: t }))
+                    break;
             }
         }
     }
 
-    RED.nodes.registerType("dyson-status", sensorNode);
+    RED.nodes.registerType("dyson-link", sensorNode);
 }
