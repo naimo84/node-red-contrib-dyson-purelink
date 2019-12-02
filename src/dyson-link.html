@@ -6,10 +6,12 @@
             defaults: {
                 confignode: {
                     value: "",
-                    type: "dyson-config"
+                    type: "dyson-config", 
+                    required: true
                 },
                 device: {
-                    value: ""
+                    value: "", 
+                    required: true
                 },
                 deviceserial: {
                     value: ""
@@ -18,7 +20,8 @@
                     value: ""
                 },
                 value: {
-                    value: ""
+                    value: 0,
+                    required: false                   
                 }
             },
             inputs: 1,
@@ -72,16 +75,21 @@
 
                 $('#node-input-action').change(function () {
                     var value = $('#node-input-action').val()
-                    if(value === 'setRotation' || value ==='setFanSpeed'){
+                    if (value === 'setRotation' || value === 'setFanSpeed') {
                         $('#node-input-value').parent().show();
                         $('#node-input-value').parent().show();
-                    }else{
+                    } else {
                         $('#node-input-value').parent().hide();
                         $('#node-input-value').parent().hide();
                     }
                     $('.form-row.toggle').hide()
                     $('.form-row.' + value).show()
-                })
+                });
+
+                $('#node-input-confignode').change(function () {
+                    var config = $('#node-input-confignode').val()                 
+                    node.confignode=config;
+                });
             }
         });
 </script>
@@ -122,5 +130,5 @@
 </script>
 
 <script type="text/x-red" data-help-name="dyson-link">
-  
+
 </script>

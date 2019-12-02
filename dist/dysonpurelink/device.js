@@ -13,7 +13,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var decrypt_1 = require("./decrypt");
 var events_1 = require("events");
 var mqtt_1 = require("mqtt");
 var debugdevice = require('debug')('dyson/device');
@@ -47,7 +46,6 @@ var Device = /** @class */ (function (_super) {
         this.name = info.name;
         this.port = info.port;
         this._MQTTPrefix = info.mqttPrefix || '475';
-        // debugdevice('updateNetworkInfo', JSON.stringify(info))
     };
     Device.prototype.getTemperature = function () {
         var _this = this;
@@ -201,8 +199,21 @@ var Device = /** @class */ (function (_super) {
     Device.prototype.disconnect = function () {
         this.client.end();
     };
+    Device.prototype.decryptCredentials = function (encrypted_password) {
+        var iv = Buffer.from([0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
+        var key = Buffer.from([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20]);
+        var b64dec = function (data) {
+            return Buffer.from(data, 'base64').toString('binary');
+        };
+        var crypto2 = require('crypto');
+        var data = b64dec(encrypted_password);
+        var decipher = crypto2.createDecipheriv('aes-256-cbc', key, iv);
+        var decoded = decipher.update(data, 'binary', 'utf8');
+        decoded += decipher.final('utf8');
+        return decoded;
+    };
     Device.prototype._decryptCredentials = function () {
-        var decrypted = JSON.parse(decrypt_1.decryptCredentials(this._deviceInfo.LocalCredentials));
+        var decrypted = JSON.parse(this.decryptCredentials(this._deviceInfo.LocalCredentials));
         this.password = decrypted.apPasswordHash;
         this.username = decrypted.serial;
     };

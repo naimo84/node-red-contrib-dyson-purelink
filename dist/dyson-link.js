@@ -5,6 +5,10 @@ module.exports = function (RED) {
     function sensorNode(config) {
         RED.nodes.createNode(this, config);
         var configNode = RED.nodes.getNode(config.confignode);
+        if (!configNode) {
+            this.error("Config is missing!");
+            return;
+        }
         var node = this;
         node.config = configNode;
         node.device = config.device;

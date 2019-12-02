@@ -40,7 +40,10 @@ var request_promise_native_1 = require("request-promise-native");
 var DysonCloud = /** @class */ (function () {
     function DysonCloud() {
         this.api = 'https://api.cp.dyson.com';
-        this.auth = {};
+        this.auth = {
+            account: '',
+            password: ''
+        };
     }
     DysonCloud.prototype.authenticate = function (email, password, country) {
         return __awaiter(this, void 0, void 0, function () {
@@ -74,9 +77,6 @@ var DysonCloud = /** @class */ (function () {
                 }
             });
         });
-    };
-    DysonCloud.prototype.logout = function () {
-        this.auth = {};
     };
     DysonCloud.prototype.getCloudDevices = function () {
         var options = {
