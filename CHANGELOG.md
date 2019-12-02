@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.0.1...v0.0.2) (2019-12-02)
+
+
+### Bug Fixes
+
+* no unittests available ([e89de5d](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/e89de5d3c5fca26169d2af76a61f29445162940f))
+
 ### 0.0.1 (2019-12-02)
 
 
