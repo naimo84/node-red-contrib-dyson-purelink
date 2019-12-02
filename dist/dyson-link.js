@@ -86,10 +86,10 @@ module.exports = function (RED) {
                     device.turnOff();
                     break;
                 case 'setRotation':
-                    device.setRotation(node.value || msg.rotation).then(function (t) { return node.send({ payload: { rotation: t } }); });
+                    device.setRotation(node.value || msg.payload.rotation).then(function (t) { return node.send({ payload: { rotation: t } }); });
                     break;
                 case 'setFanSpeed':
-                    device.setFanSpeed(node.value || msg.speed).then(function (t) { return node.send({ payload: { fan_speed: t } }); });
+                    device.setFanSpeed(node.value || msg.payload.speed).then(function (t) { return node.send({ payload: { fan_speed: t } }); });
                     break;
             }
         }

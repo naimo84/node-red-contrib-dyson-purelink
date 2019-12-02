@@ -59,7 +59,29 @@ npm install /path/to/node-red-contrib-dyson-purelink
 
 ### node explanation:
 
+The action can be defined in the node properties or can be in the msg.payload.action.
+
+Possible values are: 
+
+- getTemperature
+- getAirQuality
+- getRelativeHumidity
+- getFanStatus
+- getFanSpeed
+- getRotationStatus
+- getAutoOnStatus                
+- setRotation
+- setFanSpeed
+- turnOn
+- turnOff
+
+For setRotation and setFanSpeed additionally msg.payload.rotation and msg.payload.speed must be set. 
+
 ### Configuration:
+
+- E-Mail: dyson E-Mail
+- Password: dyson Password
+- Country: Country-Code (US,DE,AT,GB,...)
 
 ## :scroll: The MIT License
 Permission is hereby granted, free of charge, to any person obtaining a copy

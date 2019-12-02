@@ -99,10 +99,10 @@ module.exports = function (RED: Red) {
                     device.turnOff();
                     break;
                 case 'setRotation':
-                    device.setRotation(node.value || msg.rotation).then(t => node.send({ payload: { rotation: t } }))
+                    device.setRotation(node.value || msg.payload.rotation).then(t => node.send({ payload: { rotation: t } }))
                     break;
                 case 'setFanSpeed':
-                    device.setFanSpeed(node.value || msg.speed).then(t => node.send({ payload: { fan_speed: t } }))
+                    device.setFanSpeed(node.value || msg.payload.speed).then(t => node.send({ payload: { fan_speed: t } }))
                     break;
             }
         }
