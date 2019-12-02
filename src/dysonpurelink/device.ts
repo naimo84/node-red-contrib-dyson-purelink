@@ -1,31 +1,28 @@
-
-
-import { decryptCredentials } from './decrypt';
 import { EventEmitter } from 'events';
 import { connect, Client } from "mqtt";
 const debugdevice = require('debug')('dyson/device')
 
 export class Device extends EventEmitter {
   client: Client;
-  password: any;
-  username: any;
-  ip: any;
-  url: any;
-  name: any;
-  port: any;
+  password: string;
+  username: string;
+  ip: string;
+  url: string;
+  name: string;
+  port: number;
   serial: any;
   sensitivity: any;
   _MQTTPrefix: string;
   _deviceInfo: any;
-  _apiV2018: any;
+  _apiV2018: boolean;
   options: {
     keepalive: number;
     clientId: string;
     clean: boolean;
     reconnectPeriod: number;
     connectTimeout: number;
-    username: any;
-    password: any;
+    username: string;
+    password: string;
     protocolId: string,
     protocolVersion: number,
     rejectUnauthorized: boolean;
@@ -64,9 +61,6 @@ export class Device extends EventEmitter {
     this.name = info.name
     this.port = info.port
     this._MQTTPrefix = info.mqttPrefix || '475'
-
-    // debugdevice('updateNetworkInfo', JSON.stringify(info))
-    
   }
 
   getTemperature() {
@@ -215,7 +209,7 @@ export class Device extends EventEmitter {
     })
 
     this.client.on('error', (err) => {
-      console.error(`MQTT: error ${err}`)    
+      console.error(`MQTT: error ${err}`)
       this.client.reconnect();
     })
 
@@ -234,22 +228,37 @@ export class Device extends EventEmitter {
     })
   }
 
-  disconnect(){
+  disconnect() {
     this.client.end();
   }
 
+  decryptCredentials(encrypted_password) {
+    let iv = Buffer.from([0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0]);
+    let key = Buffer.from([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20])
+
+    let b64dec = (data) => {
+      return new Buffer(data, 'base64').toString('binary')
+    };
+    var crypto2 = require('crypto');
+    let data = b64dec(encrypted_password)
+    let decipher = crypto2.createDecipheriv('aes-256-cbc', key, iv);
+    let decoded = decipher.update(data, 'binary', 'utf8');
+    decoded += decipher.final('utf8');
+    return decoded;
+  }
+
   _decryptCredentials() {
-    var decrypted = JSON.parse(decryptCredentials(this._deviceInfo.LocalCredentials))
+    var decrypted = JSON.parse(this.decryptCredentials(this._deviceInfo.LocalCredentials))
     this.password = decrypted.apPasswordHash
     this.username = decrypted.serial
   }
 
   _requestCurrentState() {
-    debugdevice(`MQTT: ${this.client}`)
+    debugdevice(`MQTT: ${this.client}`);
     this.client.publish(this._getCommandTopic(), JSON.stringify({
       msg: 'REQUEST-CURRENT-STATE',
       time: new Date().toISOString()
-    }))
+    }));
   }
 
   _setStatus(data) {

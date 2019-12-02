@@ -2,16 +2,22 @@ import { get, post } from 'request-promise-native';
 
 export class DysonCloud {
     api: string;
-    auth: any;
+    auth: {
+        account: string;
+        password: string;
+    };
 
     constructor() {
-        this.api = 'https://api.cp.dyson.com'
-        this.auth = {}
+        this.api = 'https://api.cp.dyson.com';
+        this.auth = {
+            account: '',
+            password: ''
+        };
     }
 
     async authenticate(email, password, country) {
         if (!country) {
-            country = 'US'
+            country = 'US';
         }
 
         var options = {
@@ -35,10 +41,6 @@ export class DysonCloud {
         return this.auth;
     }
 
-    logout() {
-        this.auth = {}
-    }
-
     getCloudDevices() {
         var options = {
             url: `${this.api}/v2/provisioningservice/manifest`,
@@ -52,9 +54,7 @@ export class DysonCloud {
             },
             json: true
         }
-
         return get(options);
     }
-
 };
 
