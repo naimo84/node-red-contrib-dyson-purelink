@@ -51,11 +51,11 @@ module.exports = function (RED) {
         var device = node.devicelink;
         if (device) {
             var action = 'getFanStatus';
-            if (node.action) {
-                action = node.action;
-            }
-            else if (msg.payload.action) {
+            if (msg.payload.action) {
                 action = msg.payload.action;
+            }
+            else if (node.action) {
+                action = node.action;
             }
             switch (action) {
                 case 'getTemperature':

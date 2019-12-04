@@ -14,7 +14,7 @@ module.exports = function (RED: Red) {
     function sensorNode(config: any) {
         RED.nodes.createNode(this, config);
         let configNode = RED.nodes.getNode(config.confignode);
-        if (!configNode) {
+        if(!configNode){
             this.error("Config is missing!")
             return;
         }
@@ -64,10 +64,10 @@ module.exports = function (RED: Red) {
         let device = node.devicelink;
         if (device) {
             let action = 'getFanStatus';
-            if (node.action) {
-                action = node.action
-            } else if (msg.payload.action) {
+            if (msg.payload.action) {
                 action = msg.payload.action
+            } else if (node.action) {
+                action = node.action
             }
 
             switch (action) {
