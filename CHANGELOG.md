@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.0.3...v0.0.4) (2019-12-04)
+
+
+### Features
+
+* msg.payload.action 4tw ([029cda1](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/029cda1bb387e5270ca31d5525dc367e4ffc060f))
+
 ### [0.0.3](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.0.2...v0.0.3) (2019-12-03)
 
 
