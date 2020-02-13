@@ -28,3 +28,5 @@ module.exports = function (RED) {
     });
     RED.nodes.registerType("dyson-config", config);
 };
+
+//# sourceMappingURL=dyson-config.js.map

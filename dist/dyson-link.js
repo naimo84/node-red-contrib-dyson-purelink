@@ -96,3 +96,5 @@ module.exports = function (RED) {
     }
     RED.nodes.registerType("dyson-link", sensorNode);
 };
+
+//# sourceMappingURL=dyson-link.js.map

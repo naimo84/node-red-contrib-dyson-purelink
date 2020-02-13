@@ -37,7 +37,7 @@ gulp.task('develop', function (done) {
     copyHtml();
 
     watch(paths.pages).on('change', () => {
-        stream.emit('restart', 10)
+        stream.emit('restart', 100)
     });
 
     stream
