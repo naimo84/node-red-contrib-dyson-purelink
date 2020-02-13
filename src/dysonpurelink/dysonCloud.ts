@@ -8,7 +8,7 @@ export class DysonCloud {
     };
 
     constructor() {
-        this.api = 'https://api.cp.dyson.com';
+        this.api = 'https://appapi.cp.dyson.com';
         this.auth = {
             account: '',
             password: ''

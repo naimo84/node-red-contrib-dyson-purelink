@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var request_promise_native_1 = require("request-promise-native");
 var DysonCloud = /** @class */ (function () {
     function DysonCloud() {
-        this.api = 'https://api.cp.dyson.com';
+        this.api = 'https://appapi.cp.dyson.com';
         this.auth = {
             account: '',
             password: ''
@@ -97,3 +97,5 @@ var DysonCloud = /** @class */ (function () {
 }());
 exports.DysonCloud = DysonCloud;
 ;
+
+//# sourceMappingURL=dysonCloud.js.map

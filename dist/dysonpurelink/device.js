@@ -242,3 +242,5 @@ var Device = /** @class */ (function (_super) {
     return Device;
 }(events_1.EventEmitter));
 exports.Device = Device;
+
+//# sourceMappingURL=device.js.map
