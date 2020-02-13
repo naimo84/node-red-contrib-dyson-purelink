@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.0.4...v0.0.5) (2020-02-13)
+
+
+### Features
+
+* device must not be required, du to inital deploy ([d1a50b4](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/d1a50b4227f38469350ba3abbcd87b87ce264e57))
+
+
+### Bug Fixes
+
+* issue [#3](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/3), Dyson Cloud Url changed ([6aa8527](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/6aa8527a2ad3ce6e82b14f7fa3b34775e061287b))
+
 ### [0.0.4](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.0.3...v0.0.4) (2019-12-04)
 
 
