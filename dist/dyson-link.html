@@ -6,7 +6,7 @@
             defaults: {
                 confignode: {
                     value: "",
-                    type: "dyson-config", 
+                    type: "dyson-config",
                     required: true
                 },
                 device: {
@@ -20,7 +20,7 @@
                 },
                 value: {
                     value: 0,
-                    required: false                   
+                    required: false
                 }
             },
             inputs: 1,
@@ -43,33 +43,27 @@
                     $("#node-config-lookup-device-icon").removeClass('fa-search');
                     $("#node-config-lookup-device-icon").addClass('spinner');
                     $("#node-config-lookup-device").addClass('disabled');
-
-                    $.getJSON('dysonDevices/' + node.confignode, function (data) {
-                        $("#node-config-lookup-device-icon").addClass('fa-search');
-                        $("#node-config-lookup-device-icon").removeClass('spinner');
-                        $("#node-config-lookup-device").removeClass('disabled');
-                        var dataArray = [];
-                        $.each(data, function (i, element) {
-                            dataArray.push(element);
-                        });
-                        $("#node-input-device").autocomplete({
-                            source: dataArray,
-                            minLength: 0,
-                            create: function () {
-                                $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
-                                    return $("<li>")
-                                        .append("<span>" + item.Name + "</span>")
-                                        .appendTo(ul);
-                                };
-                            },
-                            select: function (event, ui) {
-
-                                $('#node-input-device').val(ui.item.Name);
-                                $('#node-input-deviceserial').val(ui.item.Serial);
-                                return false;
-                            }
-                        }).autocomplete("search", "");
-                    });
+                    $("#node-input-device").autocomplete({
+                        source: function (request, response) {
+                            $.getJSON('dysonDevices/' + node.confignode, function (data) {
+                                $("#node-config-lookup-device-icon").addClass('fa-search');
+                                $("#node-config-lookup-device-icon").removeClass('spinner');
+                                $("#node-config-lookup-device").removeClass('disabled');
+                                response($.map(data, function (value, key) {                                  
+                                    return {
+                                        label: value.Name,
+                                        value: value.Serial
+                                    };
+                                }));                      
+                            });
+                        },
+                        minLength: 0,                       
+                        select: function (event, ui) {
+                            $('#node-input-device').val(ui.item.label);
+                            $('#node-input-deviceserial').val(ui.item.value);
+                            return false;
+                        }
+                    }).autocomplete("search", "");
                 });
 
                 $('#node-input-action').change(function () {
@@ -86,8 +80,8 @@
                 });
 
                 $('#node-input-confignode').change(function () {
-                    var config = $('#node-input-confignode').val()                 
-                    node.confignode=config;
+                    var config = $('#node-input-confignode').val()
+                    node.confignode = config;
                 });
             }
         });
