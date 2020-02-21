@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.0...v0.1.1) (2020-02-21)
+
+
+### Bug Fixes
+
+* issue [#2](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/2), read-only device selection ([6dee3dd](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/6dee3ddb0853fe460a4afc4b409e961032093010))
+
 ## [0.1.0](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.0.5...v0.1.0) (2020-02-13)
 
 ### [0.0.5](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.0.4...v0.0.5) (2020-02-13)

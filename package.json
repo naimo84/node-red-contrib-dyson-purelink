@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-dyson-purelink",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "NodeRed dyson purelink Adapter",
   "author": {
     "name": "naimo84",
@@ -52,35 +52,35 @@
     "url": "https://paypal.me/NeumannBenjamin"
   },
   "dependencies": {
-    "cloneextend": "0.0.3",
-    "lodash": "^4.17.15",
-    "debug": "^4.1.1",
     "bonjour": "3.5.0",
+    "cloneextend": "0.0.3",
+    "debug": "^4.1.1",
+    "events": "^3.1.0",
+    "lodash": "^4.17.15",
     "mqtt": "3.0.0",
-    "events": "^3.0.0",
-    "request-promise-native": "1.0.8",
-    "request": "^2.88.0"
+    "request": "^2.88.2",
+    "request-promise-native": "1.0.8"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.149",
     "@types/mqtt": "^2.5.0",
-    "@types/node": "^12.12.9",
-    "@types/node-red": "^0.20.0",
+    "@types/node": "^12.12.28",
+    "@types/node-red": "^0.20.1",
     "@types/request-promise-native": "^1.0.17",
-    "commitlint": "^8.2.0",
+    "commitlint": "^8.3.5",
     "gulp": "^4.0.2",
-    "gulp-typescript": "^5.0.1",
+    "gulp-nodemon": "^2.4.2",
     "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^5.0.1",
     "gulp-watch": "^5.0.1",
     "husky": "3.1.0",
-    "gulp-nodemon": "^2.4.2",
-    "nodemon": "^1.19.4",
     "mocha": "6.2.2",
     "node-red": "1.0.2",
     "node-red-node-test-helper": "^0.2.3",
+    "nodemon": "^1.19.4",
     "should": "13.2.3",
-    "standard-version": "^7.0.1",
-    "typescript": "^3.7.2"
+    "standard-version": "^7.1.0",
+    "typescript": "^3.8.2"
   },
   "commitlint": {
     "format": {
