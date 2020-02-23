@@ -105,10 +105,13 @@ export class Device extends EventEmitter {
   getFanStatus() {
     return new Promise((resolve, reject) => {
       this.once('state', (json) => {
+        let on = json['product-state']['fmod'] === "FAN" ||
+          json['product-state']['fmod'] === "AUTO" ||
+          json['product-state']['fpwr'] === "ON";
         const fpwr = this._apiV2018 ? json['product-state']['fmod'] : json['product-state']['fpwr']
         const isOn = this._apiV2018 ? (fpwr === 'FAN') : (fpwr === 'ON')
 
-        resolve(isOn)
+        resolve(on)
       })
       this._requestCurrentState()
     })
@@ -155,7 +158,9 @@ export class Device extends EventEmitter {
   }
 
   setFan(value) {
-    const data = !this._apiV2018 ? { fpwr: value ? 'ON' : 'OFF' } : { fmod: value ? 'FAN' : 'OFF' }
+
+    const data = this._apiV2018 ? { fpwr: value ? 'ON' : 'OFF' } : { fmod: value ? 'FAN' : 'OFF' }
+    debugdevice(`setFan - data: ${JSON.stringify(data)}`)
     this._setStatus(data)
     return this.getFanStatus()
   }
@@ -167,6 +172,9 @@ export class Device extends EventEmitter {
   }
 
   setAuto(value) {
+    if (value && this._apiV2018) {
+      this.turnOn();
+    }
     const data = this._apiV2018 ? { auto: value ? 'ON' : 'OFF' } : { fmod: value ? 'AUTO' : 'OFF' }
     this._setStatus(data)
     return this.getAutoOnStatus()
@@ -191,10 +199,10 @@ export class Device extends EventEmitter {
       password: this.password,
       rejectUnauthorized: false
     }
+    // TP04 is 438, DP04 is 520, HP04 is 527
+    this._apiV2018 = this._MQTTPrefix === '438' || this._MQTTPrefix === '520' || this._MQTTPrefix === '527'
 
-    this._apiV2018 = this._MQTTPrefix === '438' || this._MQTTPrefix === '455'
-
-    if (this._apiV2018 || this._MQTTPrefix === '520') {
+    if (this._MQTTPrefix === '438' || this._MQTTPrefix === '520') {
       this.options.protocolVersion = 3
       this.options.protocolId = 'MQIsdp'
     }
@@ -254,7 +262,7 @@ export class Device extends EventEmitter {
   }
 
   _requestCurrentState() {
-    debugdevice(`MQTT: ${this.client}`);
+    debugdevice(`MQTT: ${JSON.stringify(this._getCommandTopic())}`);
     this.client.publish(this._getCommandTopic(), JSON.stringify({
       msg: 'REQUEST-CURRENT-STATE',
       time: new Date().toISOString()

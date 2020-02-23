@@ -1,6 +1,7 @@
 
 import { Red, Node } from 'node-red';
 import { DysonPurelink } from './dysonpurelink/DysonPurelink';
+import { Device } from './dysonpurelink/device';
 
 
 export interface DysonNode extends Node {
@@ -14,7 +15,7 @@ module.exports = function (RED: Red) {
     function sensorNode(config: any) {
         RED.nodes.createNode(this, config);
         let configNode = RED.nodes.getNode(config.confignode);
-        if(!configNode){
+        if (!configNode) {
             this.error("Config is missing!")
             return;
         }
@@ -30,10 +31,14 @@ module.exports = function (RED: Red) {
             if (!Array.isArray(cloud_devices) || cloud_devices.length === 0) {
                 return
             }
+
             cloud_devices.forEach((cloud_device) => {
+                node.debug("Cloud_devices: " + JSON.stringify(cloud_device))
                 if (cloud_device.serial === node.deviceserial) {
                     pureLink.findNetworkDevices((network_devices) => {
+                        
                         network_devices.forEach(network_device => {
+                            node.debug("Network_device: " + JSON.stringify(network_device))
                             if (network_device.serial === node.deviceserial) {
                                 cloud_device.updateNetworkInfo(network_device);
                                 node.devicelink = cloud_device;
@@ -56,12 +61,13 @@ module.exports = function (RED: Red) {
         }
 
         node.on('close', () => {
-            node.devicelink.disconnect();
+            if (node.devicelink)
+                node.devicelink.disconnect();
         });
     }
 
     function getStatus(msg: any, node: DysonNode, config: any) {
-        let device = node.devicelink;
+        let device: Device = node.devicelink;
         if (device) {
             let action = 'getFanStatus';
             if (msg.payload.action) {
@@ -69,7 +75,7 @@ module.exports = function (RED: Red) {
             } else if (node.action) {
                 action = node.action
             }
-
+            node.debug("action: " + action)            
             switch (action) {
                 case 'getTemperature':
                     device.getTemperature().then(t => node.send({ payload: { temperature: t } }))
@@ -91,6 +97,12 @@ module.exports = function (RED: Red) {
                     break;
                 case 'getAutoOnStatus':
                     device.getAutoOnStatus().then(t => node.send({ payload: { auto_on: t } }))
+                    break;
+                case 'setAutoOnStatus':
+                    device.setAuto(true).then(t => node.send({ payload: { auto_on: t } }))
+                    break;
+                case 'setAutoOffStatus':
+                    device.setAuto(false).then(t => node.send({ payload: { auto_on: t } }))
                     break;
                 case 'turnOn':
                     device.turnOn();
