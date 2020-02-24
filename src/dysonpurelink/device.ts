@@ -108,9 +108,6 @@ export class Device extends EventEmitter {
         let on = json['product-state']['fmod'] === "FAN" ||
           json['product-state']['fmod'] === "AUTO" ||
           json['product-state']['fpwr'] === "ON";
-        const fpwr = this._apiV2018 ? json['product-state']['fmod'] : json['product-state']['fpwr']
-        const isOn = this._apiV2018 ? (fpwr === 'FAN') : (fpwr === 'ON')
-
         resolve(on)
       })
       this._requestCurrentState()
