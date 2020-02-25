@@ -1,1 +1,7 @@
 .github
+src/
+test/
+gulpfile.js
+tsconfig.json
+.htmlhintrc
+*.js.map
