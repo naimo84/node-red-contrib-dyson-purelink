@@ -10,22 +10,25 @@ module.exports = function (RED: any) {
         this.config = this;
     }
 
-    RED.httpAdmin.get("/dysonDevices/:id", function (req, res) {
+    RED.httpAdmin.get("/dysonDevices/:id", async (req, res) => {
         RED.log.debug("GET /dysonDevices");
         const nodeId = req.params.id;
-        let config = RED.nodes.getNode(nodeId);
+        const config = RED.nodes.getNode(nodeId);
 
-        let pureLink = new DysonPurelink(config.username, config.password, 'DE');
-        pureLink.getDevices().then(devices => {
-            if (!Array.isArray(devices) || devices.length === 0) {
-                return
+        const pureLink = new DysonPurelink(config.username, config.password, 'DE');
+
+        try {
+            const devices = await pureLink.getDevices();
+
+            if (!Array.isArray(devices)) {
+                return [];
             }
-            let ret = [];
-            for (let device of devices) {
-                ret.push(device._deviceInfo)
-            }
-            res.json(ret);
-        }).catch(err => console.error(err));
+
+            const deviceInfo = devices.map(d => d._deviceInfo);
+            res.json(deviceInfo);
+        } catch(e) {
+            console.error(e);
+        }
     });
 
     RED.nodes.registerType("dyson-config", config);
