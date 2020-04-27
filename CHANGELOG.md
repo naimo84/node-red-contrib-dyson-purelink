@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.3...v0.1.4) (2020-04-27)
+
+
+### Features
+
+* npm ignore more files ([d69f7a9](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/d69f7a9c4b395a20198efa8662ed5bac0805d53e))
+
+
+### Bug Fixes
+
+* ignore dist folder ([b15472e](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/b15472eebd25d25a4e9a1794ef328d92c95606be))
+* issue [#10](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/10), country from config ([ce19bb7](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/ce19bb704c06dfbce3222b0c3802e4a42da848ce))
+
 ### [0.1.3](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.2...v0.1.3) (2020-02-24)
 
 ### [0.1.2](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.1...v0.1.2) (2020-02-24)
