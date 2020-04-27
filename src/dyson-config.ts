@@ -15,7 +15,7 @@ module.exports = function (RED: any) {
         const nodeId = req.params.id;
         const config = RED.nodes.getNode(nodeId);
 
-        const pureLink = new DysonPurelink(config.username, config.password, 'DE');
+        const pureLink = new DysonPurelink(config.username, config.password,  config.country);
 
         try {
             const devices = await pureLink.getDevices();
