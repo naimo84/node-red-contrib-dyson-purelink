@@ -168,6 +168,16 @@ export class Device extends EventEmitter {
     return this.getFanSpeed()
   }
 
+  setHeat(value) {
+    if (value) {
+      this._setStatus({ hmod: "HEAT" });
+    }
+    else {
+      this._setStatus({ fmod: "FAN" });
+      this._setStatus({ hmod: "OFF" });
+    }
+  }
+
   setAuto(value) {
     if (value && this._apiV2018) {
       this.turnOn();

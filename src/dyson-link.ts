@@ -26,7 +26,7 @@ module.exports = function (RED: Red) {
         node.value = config.value;
         node.deviceserial = config.deviceserial;
 
-        let pureLink = new DysonPurelink(node.config.username, node.config.password, 'DE');
+        let pureLink = new DysonPurelink(node.config.username, node.config.password,  node.config.country);
         pureLink.getDevices().then(cloud_devices => {
             if (!Array.isArray(cloud_devices) || cloud_devices.length === 0) {
                 return
@@ -36,7 +36,7 @@ module.exports = function (RED: Red) {
                 node.debug("Cloud_devices: " + JSON.stringify(cloud_device))
                 if (cloud_device.serial === node.deviceserial) {
                     pureLink.findNetworkDevices((network_devices) => {
-                        
+
                         network_devices.forEach(network_device => {
                             node.debug("Network_device: " + JSON.stringify(network_device))
                             if (network_device.serial === node.deviceserial) {
@@ -75,7 +75,7 @@ module.exports = function (RED: Red) {
             } else if (node.action) {
                 action = node.action
             }
-            node.debug("action: " + action)            
+            node.debug("action: " + action)
             switch (action) {
                 case 'getTemperature':
                     device.getTemperature().then(t => node.send({ payload: { temperature: t } }))
@@ -109,6 +109,12 @@ module.exports = function (RED: Red) {
                     break;
                 case 'turnOff':
                     device.turnOff();
+                    break;
+                case 'setHeatOn':
+                    device.setHeat(true);
+                    break;
+                case 'setHeatOff':
+                    device.setHeat(false);
                     break;
                 case 'setRotation':
                     device.setRotation(node.value || msg.payload.rotation).then(t => node.send({ payload: { rotation: t } }))

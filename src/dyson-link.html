@@ -113,6 +113,8 @@
                 <option value="setAutoOnStatus">set AutoOn Status</option> 
                 <option value="setAutoOffStatus">set AutoOff Status</option> 
                 <option value="setRotation">set Rotation</option>
+                <option value="setHeatOn">set Heat On</option>
+                <option value="setHeatOff">set Heat Off</option>
                 <option value="setFanSpeed">set Fan Speed</option>
                 <option value="turnOn">turn On</option>
                 <option value="turnOff">turn Off</option>
@@ -125,21 +127,25 @@
 </script>
 
 <script type="text/x-red" data-help-name="dyson-link">
-    The action can be defined in the node properties or can be in the msg.payload.action.
+    <p>The action can be defined in the node properties or can be in the msg.payload.action.</p>
 
-    Possible msg.payload.action values are: 
+    <p>Possible msg.payload.action values are: </p>
     
-    - getTemperature
-    - getAirQuality
-    - getRelativeHumidity
-    - getFanStatus
-    - getFanSpeed
-    - getRotationStatus
-    - getAutoOnStatus                
-    - setRotation
-    - setFanSpeed
-    - turnOn
-    - turnOff
+    <ul>
+    <li>getTemperature</li>
+    <li>getAirQuality</li>
+    <li>getRelativeHumidity</li>
+    <li>getFanStatus</li>
+    <li>getFanSpeed</li>
+    <li>getRotationStatus</li>
+    <li>getAutoOnStatus       </li>         
+    <li>setRotation</li>
+    <li>setFanSpeed</li>
+    <li>setHeatOn</li>
+    <li>setHeatOff</li>
+    <li>turnOn</li>
+    <li>turnOff</li>
+    </ul>
     
-    For setRotation and setFanSpeed additionally msg.payload.rotation and msg.payload.speed must be set. 
+    <p>For setRotation and setFanSpeed additionally msg.payload.rotation and msg.payload.speed must be set. </p>
 </script>
