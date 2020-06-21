@@ -41,7 +41,7 @@
     "release": "standard-version",
     "release-minor": "standard-version --release-as minor",
     "dev": "gulp develop",
-    "build": "gulp"
+    "build":"gulp"
   },
   "husky": {
     "hooks": {

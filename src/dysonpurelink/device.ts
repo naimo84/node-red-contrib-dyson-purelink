@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import { connect, Client } from "mqtt";
+import { debug } from 'console';
 const debugdevice = require('debug')('dyson/device')
 
 export class Device extends EventEmitter {
@@ -105,6 +106,7 @@ export class Device extends EventEmitter {
   getFanStatus() {
     return new Promise((resolve, reject) => {
       this.once('state', (json) => {
+        debug(json)
         let on = json['product-state']['fmod'] === "FAN" ||
           json['product-state']['fmod'] === "AUTO" ||
           json['product-state']['fpwr'] === "ON";
@@ -265,6 +267,7 @@ export class Device extends EventEmitter {
   _decryptCredentials() {
     var decrypted = JSON.parse(this.decryptCredentials(this._deviceInfo.LocalCredentials))
     this.password = decrypted.apPasswordHash
+    debug(`password ${JSON.stringify(decrypted)}`)
     this.username = decrypted.serial
   }
 

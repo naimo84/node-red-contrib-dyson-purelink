@@ -1,7 +1,8 @@
 
 import { Red, Node } from 'node-red';
-import { DysonPurelink } from './dysonpurelink/DysonPurelink';
+import DysonPurelink, { findNetworkDevices } from './dysonpurelink/DysonPurelink';
 import { Device } from './dysonpurelink/device';
+import { debug } from 'console';
 
 
 export interface DysonNode extends Node {
@@ -23,6 +24,7 @@ module.exports = function (RED: Red) {
         node.config = configNode;
         node.device = config.device;
         node.action = config.action;
+        node.ip = config.ip;
         node.value = config.value;
         node.deviceserial = config.deviceserial;
 
@@ -32,20 +34,30 @@ module.exports = function (RED: Red) {
                 return
             }
 
-            cloud_devices.forEach((cloud_device) => {
+            cloud_devices.forEach(async (cloud_device) => {
                 node.debug("Cloud_devices: " + JSON.stringify(cloud_device))
                 if (cloud_device.serial === node.deviceserial) {
-                    pureLink.findNetworkDevices((network_devices) => {
+                    if (!node.ip) {
+                        let network_devices = await findNetworkDevices();
 
                         network_devices.forEach(network_device => {
                             node.debug("Network_device: " + JSON.stringify(network_device))
                             if (network_device.serial === node.deviceserial) {
                                 cloud_device.updateNetworkInfo(network_device);
                                 node.devicelink = cloud_device;
-                                node.devicelink.connect('dyson_' + Math.random().toString(16));
                             }
                         });
-                    });
+                    } else {
+                        cloud_device.updateNetworkInfo({
+                            ip :node.ip,
+                            url : 'mqtt://' + node.ip,                            
+                            port : 1883,
+                            mqttPrefix: cloud_device._deviceInfo.ProductType
+                        });
+                        debug(cloud_device)
+                        node.devicelink = cloud_device;
+                    }
+                    node.devicelink.connect('dyson_' + Math.random().toString(16));
                 }
             });
         });

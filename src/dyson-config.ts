@@ -1,4 +1,4 @@
-import { DysonPurelink } from "./dysonpurelink/DysonPurelink";
+import DysonPurelink from "./dysonpurelink/DysonPurelink";
 
 module.exports = function (RED: any) {
     function config(config) {

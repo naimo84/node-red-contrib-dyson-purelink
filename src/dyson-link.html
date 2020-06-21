@@ -12,10 +12,16 @@
                 device: {
                     value: ""
                 },
+                ip:{
+                    value:""
+                },
                 deviceserial: {
                     value: ""
                 },
                 action: {
+                    value: ""
+                },
+                name: {
                     value: ""
                 },
                 value: {
@@ -88,6 +94,11 @@
 </script>
 
 <script type="text/x-red" data-template-name="dyson-link">
+    <div class="form-row">        
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span>Name</span></label>
+        <input type="text" id="node-input-name">
+    </div>
+    <hr/>
     <div class="form-row">
         <label for="node-input-confignode"><i class="fa fa-globe"></i> <span>Config</span></label>
         <input type="text" id="node-input-confignode">
@@ -100,6 +111,14 @@
             <i id="node-config-lookup-device-icon" class="fa fa-search"></i>
         </a>
     </div>
+    <div class="form-tips">     
+        <i class="fas fa-exclamation"></i>
+            <b>INFO:</b> IF you know the IP address of the device, it better to use this. Instead bonjour auto-discovery will be used. Sometimes this is magically not working correctly. 
+    </div>
+    <div class="form-row">
+        <label for="node-input-ip"><i class="fa fa-globe"></i> <span>IP of the device</span></label>
+        <input type="text" id="node-input-ip">
+    </div> 
     <div class="form-row">
         <label for="node-input-action"><i class="fa fa-tag"></i> Action</label>
 		<select type="text" id="node-input-action" style="display: inline-block; width: 70%;" >
