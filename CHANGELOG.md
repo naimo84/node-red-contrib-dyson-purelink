@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.6...v0.1.7) (2020-06-21)
+
+
+### Features
+
+* [#15](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/15), correct air quality values ([1ea6fa0](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/1ea6fa040792e8f2e5d15e03d8d9cc9108e1e826))
+
 ### [0.1.6](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.5...v0.1.6) (2020-06-21)
 
 
