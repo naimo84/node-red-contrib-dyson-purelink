@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.5...v0.1.6) (2020-06-21)
+
+
+### Features
+
+* set device IP ([700bf7a](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/700bf7a920f1a3d2991e1726a4751b512398d184))
+
+### [0.1.4](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.3...v0.1.4) (2020-04-27)
+
+
+### Bug Fixes
+
+* issue [#10](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/10), country from config ([ce19bb7](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/ce19bb704c06dfbce3222b0c3802e4a42da848ce))
+
 ### [0.1.5](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.3...v0.1.5) (2020-05-23)
 
 
