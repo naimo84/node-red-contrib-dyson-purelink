@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.7...v0.2.0) (2020-06-22)
+
+
+### Features
+
+* [#12](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/12), added more product types ([eff3405](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/eff34050800660ba9601b10997cdb4c9d08b356d))
+
 ### [0.1.7](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.6...v0.1.7) (2020-06-21)
 
 
