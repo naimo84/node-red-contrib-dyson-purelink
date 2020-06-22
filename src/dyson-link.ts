@@ -28,13 +28,13 @@ module.exports = function (RED: Red) {
         node.value = config.value;
         node.deviceserial = config.deviceserial;
 
-        let pureLink = new DysonPurelink(node.config.username, node.config.password,  node.config.country);
+        let pureLink = new DysonPurelink(node.config.username, node.config.password, node.config.country);
         pureLink.getDevices().then(cloud_devices => {
             if (!Array.isArray(cloud_devices) || cloud_devices.length === 0) {
                 return
             }
 
-            cloud_devices.forEach(async (cloud_device) => {
+            cloud_devices.forEach(async (cloud_device: Device) => {
                 node.debug("Cloud_devices: " + JSON.stringify(cloud_device))
                 if (cloud_device.serial === node.deviceserial) {
                     if (!node.ip) {
@@ -49,13 +49,18 @@ module.exports = function (RED: Red) {
                         });
                     } else {
                         cloud_device.updateNetworkInfo({
-                            ip :node.ip,
-                            url : 'mqtt://' + node.ip,                            
-                            port : 1883,
-                            mqttPrefix: cloud_device._deviceInfo.ProductType
-                        });
-                        debug(cloud_device)
+                            ip: node.ip,
+                            url: 'mqtt://' + node.ip,
+                            port: 1883,
+                            mqttPrefix: cloud_device._deviceInfo.ProductType,
+                            productType: cloud_device._deviceInfo.ProductType
+                        });                        
                         node.devicelink = cloud_device;
+                    }
+                    debug(`devicelink: ${node.devicelink}`)
+                    if (!node.devicelink || !node.devicelink.ip || node.devicelink.ip <= 0) {
+                        node.error("No dyson device found via bonjour service. Have you tried a direct IP address?")
+                        return;
                     }
                     node.devicelink.connect('dyson_' + Math.random().toString(16));
                 }

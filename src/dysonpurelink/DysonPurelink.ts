@@ -31,27 +31,28 @@ export default class DysonPurelink {
 }
 
 export async function findNetworkDevices(): Promise<any> {
-  console.log(`findNetworkDevices`);
+  debug(`findNetworkDevices`);
   let networkDevices = new Map();    
   let service = await bonjour.find({ type: 'dyson_mqtt' });
-  let serial = service.name;
+  let serial = service.name||service._name;
   let mqttPrefix = '475';
   debug(`service ${JSON.stringify(service)}`)
   if (serial.includes('_')) {
     serial = serial.split('_');
+    debug(serial)
     mqttPrefix = serial[0];
     serial = serial[1];
   }
 
   const networkDevice = {
     name: service.name,
-    ip: service.addresses[0],
+    ip:  service.addresses ? service.addresses[0]:0,
     port: service.port,
     serial,
     mqttPrefix
   }
 
-  console.log(`Got network device: ${networkDevice.serial}`);
+  debug(`Got network device: ${networkDevice.serial}`);
 
   networkDevices.set(networkDevice.serial, networkDevice);
 
