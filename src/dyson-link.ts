@@ -69,7 +69,25 @@ module.exports = function (RED: Red) {
 
         try {
             node.on('input', (msg) => {
-                getStatus(msg, node, node.config);
+
+                let configs = [];
+                if ((msg.payload && msg.payload.device) || node.all === true) {
+                    RED.nodes.eachNode(n => {
+                        if (n.type === 'dyson-config' && (n.name === msg.payload.device || msg.payload.device == "all" || node.all === true)) {
+                            configs.push(n);
+                        }
+                    })
+                }
+
+                if (configs.length === 0) {
+                    configs.push(RED.nodes.getNode(config.confignode))
+                }
+
+                for (let configNode of configs) {
+                    getStatus(msg, node, configNode);
+                }
+
+                
             });
         }
         catch (err) {
