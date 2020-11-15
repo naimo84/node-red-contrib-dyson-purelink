@@ -57,7 +57,17 @@ npm install /path/to/node-red-contrib-dyson-purelink
 
 ## :memo: Documentation
 
+### Configuration:
+
+- E-Mail: dyson E-Mail
+- Password: dyson Password
+- Country: Country-Code (US,DE,AT,GB,...)
+
+<b>IMPORTANT:</b> Deploy the node, <b>before</b> searching for devices. 
+
 ### node explanation:
+
+<b>INFO:</b> IF you know the IP address of the device, it better to use this. Instead bonjour auto-discovery will be used. Sometimes this is magically not working correctly. 
 
 The action can be defined in the node properties or can be in the msg.payload.action.
 
@@ -70,18 +80,23 @@ Possible values are:
 - getFanSpeed
 - getRotationStatus
 - getAutoOnStatus                
-- setRotation
-- setFanSpeed
+- setRotation - rotation (true/false)  
+{"action":"setRotation", "rotation": true}
+- setFanSpeed - speed in percent  
+  { "action": "setFanSpeed","speed": "100" }
+- setHeatOn
+- setHeatOff
 - turnOn
 - turnOff
 
 For setRotation and setFanSpeed additionally msg.payload.rotation and msg.payload.speed must be set. 
 
-### Configuration:
 
-- E-Mail: dyson E-Mail
-- Password: dyson Password
-- Country: Country-Code (US,DE,AT,GB,...)
+### ExampleFlow:
+
+![example][example_flow]
+
+Download and import to NodeRED - [flow.json][example_flow_json]
 
 ## :scroll: The MIT License
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -95,10 +110,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
 
 Coded with :heart: in :cloud:
 
-
 [badge_brave]: ./examples/support_banner.png
+[example_flow]: ./examples/flow.png
+[example_flow_json]: ./examples/flow.json
 [badge_paypal]: https://img.shields.io/badge/Donate-PayPal-blue.svg
 
 [paypal-donations]: https://paypal.me/NeumannBenjamin
+
 [brave]: https://brave.com/nai412
 [contributing]: /CONTRIBUTING.md

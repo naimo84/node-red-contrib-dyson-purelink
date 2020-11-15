@@ -1,0 +1,365 @@
+[
+    {
+        "id": "d157a68d.8e76a8",
+        "type": "dyson-link",
+        "z": "21093d5c.b813c2",
+        "confignode": "6b1e1ae4.23c574",
+        "device": "Dyson Pure Hot+Cool Link™",
+        "ip": "10.0.0.1",
+        "deviceserial": "E6K-EU-123456",
+        "action": "turnOff",
+        "name": "",
+        "value": 0,
+        "x": 1740,
+        "y": 440,
+        "wires": [
+            [
+                "8ed29d97.61982"
+            ]
+        ]
+    },
+    {
+        "id": "4923fb5a.9f0874",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "getRotationStatus",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"getRotationStatus\"}",
+        "payloadType": "json",
+        "x": 1490,
+        "y": 440,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "8ed29d97.61982",
+        "type": "debug",
+        "z": "21093d5c.b813c2",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1890,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "a8ea472d.2d5398",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "getFanSpeed",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"getFanSpeed\"}",
+        "payloadType": "json",
+        "x": 1470,
+        "y": 400,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "5f62a791.84ef08",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "getAirQuality",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"getAirQuality\"}",
+        "payloadType": "json",
+        "x": 1470,
+        "y": 360,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "d90ca25d.2f65c",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "getTemperature",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"getTemperature\"}",
+        "payloadType": "json",
+        "x": 1480,
+        "y": 320,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "a2dab049.c7125",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "getFanStatus",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"getFanStatus\"}",
+        "payloadType": "json",
+        "x": 1470,
+        "y": 280,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "b71e8399.da3a1",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "turnOn",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"turnOn\"}",
+        "payloadType": "json",
+        "x": 1450,
+        "y": 480,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "2265b470.20b52c",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "turnOff",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"turnOff\"}",
+        "payloadType": "json",
+        "x": 1450,
+        "y": 520,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "93dcfa0d.bb3198",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "setHeatOn",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"setHeatOn\"}",
+        "payloadType": "json",
+        "x": 1460,
+        "y": 560,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "d34257a.0d339a8",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "setHeatOff",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"setHeatOff\"}",
+        "payloadType": "json",
+        "x": 1460,
+        "y": 600,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "c0fe7f41.70986",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "setFanSpeed",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"setFanSpeed\", \"speed\":\"100\"}",
+        "payloadType": "json",
+        "x": 1470,
+        "y": 640,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "4d261016.a2bda",
+        "type": "inject",
+        "z": "21093d5c.b813c2",
+        "name": "setRotation",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"action\":\"setRotation\", \"rotation\":true}",
+        "payloadType": "json",
+        "x": 1470,
+        "y": 680,
+        "wires": [
+            [
+                "d157a68d.8e76a8"
+            ]
+        ]
+    },
+    {
+        "id": "6b1e1ae4.23c574",
+        "type": "dyson-config",
+        "z": "",
+        "username": "dyson@example.com",
+        "password": "mypassword",
+        "country": "DE"
+    }
+]
