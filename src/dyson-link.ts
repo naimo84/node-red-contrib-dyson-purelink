@@ -27,46 +27,49 @@ module.exports = function (RED: Red) {
         node.ip = config.ip;
         node.value = config.value;
         node.deviceserial = config.deviceserial;
-
-        let pureLink = new DysonPurelink(node.config.username, node.config.password, node.config.country);
-        pureLink.getDevices().then(cloud_devices => {
-            if (!Array.isArray(cloud_devices) || cloud_devices.length === 0) {
-                return
-            }
-
-            cloud_devices.forEach(async (cloud_device: Device) => {
-                node.debug("Cloud_devices: " + JSON.stringify(cloud_device))
-                if (cloud_device.serial === node.deviceserial) {
-                    if (!node.ip) {
-                        let network_devices = await findNetworkDevices();
-
-                        network_devices.forEach(network_device => {
-                            node.debug("Network_device: " + JSON.stringify(network_device))
-                            if (network_device.serial === node.deviceserial) {
-                                cloud_device.updateNetworkInfo(network_device);
-                                node.devicelink = cloud_device;
-                            }
-                        });
-                    } else {
-                        cloud_device.updateNetworkInfo({
-                            ip: node.ip,
-                            url: 'mqtt://' + node.ip,
-                            port: 1883,
-                            mqttPrefix: cloud_device._deviceInfo.ProductType,
-                            productType: cloud_device._deviceInfo.ProductType
-                        });                        
-                        node.devicelink = cloud_device;
-                    }
-                    debug(`devicelink: ${node.devicelink}`)
-                    if (!node.devicelink || !node.devicelink.ip || node.devicelink.ip <= 0) {
-                        node.error("No dyson device found via bonjour service. Have you tried a direct IP address?")
-                        return;
-                    }
-                    node.devicelink.connect('dyson_' + Math.random().toString(16));
+        try {
+            let pureLink = new DysonPurelink(node.config.username, node.config.password, node.config.country);
+            pureLink.getDevices().then(cloud_devices => {
+                if (!Array.isArray(cloud_devices) || cloud_devices.length === 0) {
+                    return
                 }
-            });
-        });
 
+                cloud_devices.forEach(async (cloud_device: Device) => {
+                    node.debug("Cloud_devices: " + JSON.stringify(cloud_device))
+                    if (cloud_device.serial === node.deviceserial) {
+                        if (!node.ip) {
+                            let network_devices = await findNetworkDevices();
+
+                            network_devices.forEach(network_device => {
+                                node.debug("Network_device: " + JSON.stringify(network_device))
+                                if (network_device.serial === node.deviceserial) {
+                                    cloud_device.updateNetworkInfo(network_device);
+                                    node.devicelink = cloud_device;
+                                }
+                            });
+                        } else {
+                            cloud_device.updateNetworkInfo({
+                                ip: node.ip,
+                                url: 'mqtt://' + node.ip,
+                                port: 1883,
+                                mqttPrefix: cloud_device._deviceInfo.ProductType,
+                                productType: cloud_device._deviceInfo.ProductType
+                            });
+                            node.devicelink = cloud_device;
+                        }
+                        debug(`devicelink: ${node.devicelink}`)
+                        if (!node.devicelink || !node.devicelink.ip || node.devicelink.ip <= 0) {
+                            node.error("No dyson device found via bonjour service. Have you tried a direct IP address?")
+                            return;
+                        }
+                        node.devicelink.connect('dyson_' + Math.random().toString(16));
+                    }
+                });
+            });
+        } catch (err) {
+            node.error('Error: ' + err.message);
+            node.status({ fill: "red", shape: "ring", text: err.message })
+        }
         try {
             node.on('input', (msg) => {
                 getStatus(msg, node, node.config);
@@ -114,6 +117,12 @@ module.exports = function (RED: Red) {
                     break;
                 case 'getAutoOnStatus':
                     device.getAutoOnStatus().then(t => node.send({ payload: { auto_on: t } }))
+                    break;
+                case 'getSleepTimer':
+                    device.getSleepTimer().then(t => node.send({ payload: { sleep_timer: t } }))
+                    break;
+                case 'setSleepTimer':
+                    device.setSleepTimer(10).then(t => node.send({ payload: { sleep_timer: t } }))
                     break;
                 case 'setAutoOnStatus':
                     device.setAuto(true).then(t => node.send({ payload: { auto_on: t } }))

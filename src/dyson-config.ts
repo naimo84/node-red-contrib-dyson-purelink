@@ -15,9 +15,9 @@ module.exports = function (RED: any) {
         const nodeId = req.params.id;
         const config = RED.nodes.getNode(nodeId);
 
-        const pureLink = new DysonPurelink(config.username, config.password,  config.country);
-
+        
         try {
+            const pureLink = new DysonPurelink(config.username, config.password,  config.country);
             const devices = await pureLink.getDevices();
 
             if (!Array.isArray(devices)) {
@@ -27,6 +27,8 @@ module.exports = function (RED: any) {
             const deviceInfo = devices.map(d => d._deviceInfo);
             res.json(deviceInfo);
         } catch(e) {
+            res.json(e);
+
             console.error(e);
         }
     });

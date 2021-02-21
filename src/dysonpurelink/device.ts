@@ -341,6 +341,23 @@ export class Device extends EventEmitter {
     return this.getFanSpeed()
   }
 
+  setSleepTimer(minutes) {
+    this._setStatus({ sltm: minutes })
+    return this.getSleepTimer()
+
+  }
+
+  getSleepTimer() {
+    return new Promise((resolve, reject) => {
+      this.once('state', (json) => {
+        const sltm = json['product-state']['sltm']
+        const minutes = parseInt(sltm)
+        resolve(minutes)
+      })
+      this._requestCurrentState()
+    })
+  }
+
   setHeat(value) {
     if (value) {
       this._setStatus({ hmod: "HEAT" });

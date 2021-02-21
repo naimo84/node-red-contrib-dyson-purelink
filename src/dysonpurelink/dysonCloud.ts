@@ -19,6 +19,13 @@ export class DysonCloud {
         if (!country) {
             country = 'US';
         }
+        await get({
+            url: `${this.api}/v1/userregistration/userstatus?country=${country}&email=${email}`,
+            method: 'get',
+            agentOptions: {
+                rejectUnauthorized: false
+            }
+        });
 
         var options = {
             url: `${this.api}/v1/userregistration/authenticate?country=${country}`,
