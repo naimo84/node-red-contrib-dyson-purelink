@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.5...v0.3.0) (2021-02-21)
+
+
+### Features
+
+* [#12](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/12), added more product types ([eff3405](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/eff34050800660ba9601b10997cdb4c9d08b356d))
+* [#15](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/15), correct air quality values ([1ea6fa0](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/1ea6fa040792e8f2e5d15e03d8d9cc9108e1e826))
+* [#21](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/21), added sleeptimer and query userstatus ([31b8b77](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/31b8b772139192f1227c57466c097c9bd59d94ce))
+* set device IP ([700bf7a](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/700bf7a920f1a3d2991e1726a4751b512398d184))
+
+### [0.1.4](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.3...v0.1.4) (2020-04-27)
+
+
+### Bug Fixes
+
+* issue [#10](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/10), country from config ([ce19bb7](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/ce19bb704c06dfbce3222b0c3802e4a42da848ce))
+
 ## [0.2.0](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.7...v0.2.0) (2020-06-22)
 
 
