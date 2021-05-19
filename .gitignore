@@ -1,3 +1,5 @@
 node_modules/*
 dist/*
 device2.ts
+dyson_cookie*
+src/index.ts

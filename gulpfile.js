@@ -8,6 +8,7 @@ var watch = require('gulp-watch');
 var paths = {
     pages: ['src/*.html'],
     assets: ['src/icons/*.png'],
+    certs: ['src/dysonpurelink/certs/*.crt'],
     src: 'src',
     dist: 'dist'
 };
@@ -22,6 +23,11 @@ gulp.task("copy-html", copyHtml);
 gulp.task("copy-assets", function () {
     return gulp.src(paths.assets)
         .pipe(gulp.dest(paths.dist + "/icons"));
+});
+
+gulp.task("copy-certs", function () {
+    return gulp.src(paths.certs)
+        .pipe(gulp.dest(paths.dist + "/dysonpurelink/certs"));
 });
 
 gulp.task('develop', function (done) {
@@ -51,7 +57,7 @@ gulp.task('develop', function (done) {
         stream.emit('restart', 10)
     });
 
-    watch('src/*.ts').on('change', () => {
+    watch('src/**/*.ts').on('change', () => {
         tsProject.src()
             .pipe(sourcemaps.init())
             .pipe(tsProject())
@@ -75,7 +81,9 @@ gulp.task('develop', function (done) {
 gulp.task("default", gulp.series(
     gulp.parallel('copy-html'),
     gulp.parallel('copy-assets'),
+    gulp.parallel('copy-certs'),
     () => {
+        var tsProject = ts.createProject("tsconfig.json");
         return tsProject.src()
             .pipe(sourcemaps.init())
             .pipe(tsProject())

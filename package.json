@@ -53,10 +53,12 @@
     "url": "https://paypal.me/NeumannBenjamin"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "bonjour": "3.5.0",
     "cloneextend": "0.0.3",
     "debug": "^4.1.1",
     "events": "^3.1.0",
+    "https": "^1.0.0",
     "lodash": "^4.17.15",
     "mqtt": "3.0.0",
     "request": "^2.88.2",
