@@ -41,14 +41,14 @@
                 $("#authenticate").click(function (event) {
                     event.preventDefault();
                     $.post('dyson/authenticate', { username: node.username, password: node.password, country: node.country }, function (data) {
-                        console.log(data)
+                        $("#node-config-input-otp").val('')
                     });
                 });
 
                 $("#verify").click(function (event) {
                     event.preventDefault();
                     $.post('dyson/verify', { username: node.username, password: node.password, country: node.country, otp: node.otp }, function (data) {
-                        console.log(data)
+                        
                     });
                 });
             }

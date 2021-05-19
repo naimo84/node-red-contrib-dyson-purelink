@@ -33,29 +33,6 @@ module.exports = function (RED: any) {
         }
     });
 
-    RED.httpAdmin.post("/dyson/authenticate", async (req, res) => {
-        const username = req.body.username;
-        try {
-            let dysonCloud = new DysonCloud();
-            let auth = await dysonCloud.authenticate(req.body.username, req.body.country);
-            res.json(auth);
-        } catch (e) {
-            res.json(e);
-            console.error(e);
-        }
-    });
-
-
-    RED.httpAdmin.post("/dyson/verify", async (req, res) => {
-        const auth = req.body.username;
-        try {
-            let dysonCloud = new DysonCloud();
-            let auth = await dysonCloud.verify(req.body.username,req.body.password,req.body.otp);
-            res.json(req.body);
-        } catch (e) {
-            res.json(e);
-            console.error(e);
-        }
-    });
+    
     RED.nodes.registerType("dyson-config", config);
 }

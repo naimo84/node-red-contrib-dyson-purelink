@@ -3,6 +3,7 @@ import { Red, Node } from 'node-red';
 import DysonPurelink, { findNetworkDevices } from './dysonpurelink/DysonPurelink';
 import { Device } from './dysonpurelink/device';
 import { debug } from 'console';
+import { DysonCloud } from './dysonpurelink/dysonCloud';
 
 
 export interface DysonNode extends Node {
@@ -13,6 +14,7 @@ export interface DysonNode extends Node {
 }
 
 module.exports = function (RED: Red) {
+
     function sensorNode(config: any) {
         RED.nodes.createNode(this, config);
         let configNode = RED.nodes.getNode(config.confignode);
@@ -21,6 +23,31 @@ module.exports = function (RED: Red) {
             return;
         }
         let node = this;
+
+        RED.httpAdmin.post("/dyson/authenticate", async (req, res) => {
+            try {
+                let dysonCloud = new DysonCloud(node,RED);
+                let auth = await dysonCloud.authenticate(req.body.username, req.body.country);
+                res.json(auth);
+            } catch (e) {
+                res.json(e);
+                console.error(e);
+            }
+        });
+
+
+        RED.httpAdmin.post("/dyson/verify", async (req, res) => {
+            try {
+                let dysonCloud = new DysonCloud(node,RED);
+                let auth = await dysonCloud.verify(req.body.username, req.body.password, req.body.otp);
+                res.json(req.body);
+            } catch (e) {
+                res.json(e);
+                console.error(e);
+            }
+        });
+
+
         node.config = configNode;
         node.device = config.device;
         node.action = config.action;
