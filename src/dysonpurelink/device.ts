@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { connect, Client } from "mqtt";
-import { debug } from 'console';
+
 const debugdevice = require('debug')('dyson/device')
 
 export interface DeviceInfo {
@@ -86,7 +86,7 @@ export class Device extends EventEmitter {
       this.options.protocolVersion = 3
       this.options.protocolId = 'MQIsdp'
     }
-    debug(`productType: ${this.productType}`)
+    debugdevice(`productType: ${this.productType}`)
     switch (this.productType) {
       case '358':
         this.model = 'Dyson Pure Humidify+Cool';
@@ -187,7 +187,7 @@ export class Device extends EventEmitter {
   _decryptCredentials() {
     var decrypted = JSON.parse(this.decryptCredentials(this._deviceInfo.LocalCredentials))
     this.password = decrypted.apPasswordHash
-    debug(`password ${JSON.stringify(decrypted)}`)
+    //debug(`password ${JSON.stringify(decrypted)}`)
     this.username = decrypted.serial
   }
 
@@ -258,10 +258,10 @@ export class Device extends EventEmitter {
 
 
         let airQuality = 0
-        debug(`hasAdvancedAirQualitySensors: ${this.hasAdvancedAirQualitySensors}`)
-        debug(`hasJetFocus: ${this.hasJetFocus}`)
-        debug(`hasHeating: ${this.hasHeating}`)
-        debug(`hasHumidifier: ${this.hasHumidifier}`)
+        debugdevice(`hasAdvancedAirQualitySensors: ${this.hasAdvancedAirQualitySensors}`)
+        debugdevice(`hasJetFocus: ${this.hasJetFocus}`)
+        debugdevice(`hasHeating: ${this.hasHeating}`)
+        debugdevice(`hasHumidifier: ${this.hasHumidifier}`)
         if (json.data.pm10) {
           airQuality = Math.max(pm25Quality, pm10Quality, va10Quality, noxlQuality)
         } else {
@@ -277,7 +277,7 @@ export class Device extends EventEmitter {
   getFanStatus() {
     return new Promise((resolve, reject) => {
       this.once('state', (json) => {
-        debug(json)
+        debugdevice(json)
         let on = json['product-state']['fmod'] === "FAN" ||
           json['product-state']['fmod'] === "AUTO" ||
           json['product-state']['fpwr'] === "ON";
