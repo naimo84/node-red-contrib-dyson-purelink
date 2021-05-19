@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.3.0...v0.3.1) (2021-05-19)
+
+
+### Bug Fixes
+
+* issue [#24](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/24), more improvement ([da242b6](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/da242b6eaebcec5d63bf93a3cc2c4a803a27b1f3))
+* issue [#24](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/24), otp code ([5404d23](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/5404d23b66b6997e415e89b46ca34d700850d0c1))
+
 ## [0.3.0](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.1.5...v0.3.0) (2021-02-21)
 
 
