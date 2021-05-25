@@ -126,7 +126,9 @@ export class DysonCloud {
             }
         }
         catch (e) {
-            unlinkSync(this.cookieFile)
+            if (existsSync(this.cookieFile)) {
+                unlinkSync(this.cookieFile)
+            }
             if (this.node) this.node.error(e)
             console.log(e);
         }
