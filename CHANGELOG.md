@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.3](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.3.2...v0.3.3) (2021-05-26)
+
+
+### Bug Fixes
+
+* issue [#24](https://github.com/naimo84/node-red-contrib-dyson-purelink/issues/24), path resolve for digicert ([8b2451a](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/8b2451ac901da1ac3e90691bdef54e53323e98c5))
+* mssing if file exists ([85f390d](https://github.com/naimo84/node-red-contrib-dyson-purelink/commit/85f390d276f75b684484bafe028990b475658997))
+
 ### [0.3.2](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.3.1...v0.3.2) (2021-05-25)
 
 ### [0.3.1](https://github.com/naimo84/node-red-contrib-dyson-purelink/compare/v0.3.0...v0.3.1) (2021-05-19)
