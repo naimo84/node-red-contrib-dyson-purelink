@@ -6,6 +6,7 @@ import { Red } from "node-red";
 
 const util = require('util');
 const fs = require('fs');
+const path = require('path');
 const readFileAsync = util.promisify(fs.readFile);
 
 const API_PATH_USER_STATUS = "/v3/userregistration/email/userstatus"
@@ -28,7 +29,7 @@ export class DysonCloud {
     RED: Red;
 
     constructor(...args) {
-        this.cookieFile = "./dyson_cookie";
+        this.cookieFile = path.resolve(__dirname,"./dyson_cookie") ;
         if (args && args.length > 0) {
             this.RED = args[1];
             this.node = this.RED.nodes.getNode(args[0].id)
@@ -56,7 +57,7 @@ export class DysonCloud {
                         'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 6.0; Android SDK built for x86_64 Build/MASTER)'
                     },
                     httpsAgent: new Agent({
-                        ca: readFileSync("./dist/dysonpurelink/certs/digicert.crt"),
+                        ca: readFileSync(path.resolve(__dirname,"./certs/digicert.crt")),
                         rejectUnauthorized: false
                     })
                 }
@@ -102,7 +103,7 @@ export class DysonCloud {
 
                 },
                 httpsAgent: new Agent({
-                    ca: readFileSync("./dist/dysonpurelink/certs/digicert.crt"),
+                    ca: readFileSync(path.resolve(__dirname,"./certs/digicert.crt")),
                     rejectUnauthorized: false
                 }),
             }
@@ -154,7 +155,7 @@ export class DysonCloud {
                         'Authorization': `Bearer ${this.auth.token}`
                     },
                     httpsAgent: new Agent({
-                        ca: readFileSync("./dist/dysonpurelink/certs/digicert.crt"),
+                        ca: readFileSync(path.resolve(__dirname,"./certs/digicert.crt")),
                         rejectUnauthorized: false
                     }),
 
