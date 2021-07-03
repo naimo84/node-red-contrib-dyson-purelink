@@ -10,6 +10,10 @@
     {
       "name": "naimo84",
       "email": "git@neumann-benjamin.de"
+    },
+    {
+      "name": "Patrick Brunier",
+      "email": "foss@brunier.nl"
     }
   ],
   "homepage": "https://github.com/naimo84/node-red-contrib-dyson-purelink",

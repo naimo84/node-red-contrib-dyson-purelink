@@ -337,7 +337,7 @@ export class Device extends EventEmitter {
 
   setFanSpeed(value) {
     const fnsp = Math.round(value / 10)
-    this._setStatus({ fnsp: this._apiV2018 ? "000" + fnsp : fnsp })
+    this._setStatus({ fnsp: this._apiV2018 && fnsp < 10 ? "000" + fnsp : this._apiV2018 && fnsp === 10 ? "00" + fnsp : fnsp });
     return this.getFanSpeed()
   }
 
