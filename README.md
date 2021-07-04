@@ -78,18 +78,26 @@ Possible values are:
 - getRelativeHumidity
 - getFanStatus
 - getFanSpeed
+- getNightModeStatus
 - getRotationStatus
 - getAutoOnStatus                
-- setRotation - rotation (true/false)  
-{"action":"setRotation", "rotation": true}
+- setRotation - rotation (true/false)
+  {"action":"setRotation", "rotation": true}
+- setRotationAngle - min_angle (5-355 degrees), max_angle (5-355 degrees)
+  {"action":"setRotationAngle", "min_angle": 90, "max_angle": 270}
 - setFanSpeed - speed in percent  
   { "action": "setFanSpeed","speed": "100" }
+- setNightModeOn
+- setNightModeOf
 - setHeatOn
 - setHeatOff
 - turnOn
 - turnOff
 
-For setRotation and setFanSpeed additionally msg.payload.rotation and msg.payload.speed must be set. 
+For the following actions some additonal parameters are mandatory:
+- setRotation: msg.payload.rotation
+- setRotationAngle: msg.payload.min_angle, msg.payload.max_angle
+- setFanSpeed: msg.payload.speed
 
 
 ### ExampleFlow:

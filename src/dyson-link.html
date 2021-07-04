@@ -127,14 +127,19 @@
                 <option value="getRelativeHumidity">get Relative Humidity</option>
                 <option value="getFanStatus">get Fan Status</option>
                 <option value="getFanSpeed">get Fan Speed</option>
+                <option value="getNightModeStatus">get Night Mode Status</option>
                 <option value="getRotationStatus">get Rotation Status</option>
+                <option value="getRotationAngle">get Rotation Angle</option>
                 <option value="getAutoOnStatus">get AutoOn Status</option>                
                 <option value="setAutoOnStatus">set AutoOn Status</option> 
                 <option value="setAutoOffStatus">set AutoOff Status</option> 
                 <option value="setRotation">set Rotation</option>
+                <option value="setRotationAngle">set Rotation Angle</option>
                 <option value="setHeatOn">set Heat On</option>
                 <option value="setHeatOff">set Heat Off</option>
                 <option value="setFanSpeed">set Fan Speed</option>
+                <option value="setNightModeOn">set Night Mode On</option>
+                <option value="setNightModeOff">set Night Mode Off</option>
                 <option value="turnOn">turn On</option>
                 <option value="turnOff">turn Off</option>
         </select>
@@ -151,20 +156,30 @@
     <p>Possible msg.payload.action values are: </p>
     
     <ul>
-    <li>getTemperature</li>
-    <li>getAirQuality</li>
-    <li>getRelativeHumidity</li>
-    <li>getFanStatus</li>
-    <li>getFanSpeed</li>
-    <li>getRotationStatus</li>
-    <li>getAutoOnStatus       </li>         
-    <li>setRotation</li>
-    <li>setFanSpeed</li>
-    <li>setHeatOn</li>
-    <li>setHeatOff</li>
-    <li>turnOn</li>
-    <li>turnOff</li>
+        <li>getTemperature</li>
+        <li>getAirQuality</li>
+        <li>getRelativeHumidity</li>
+        <li>getFanStatus</li>
+        <li>getFanSpeed</li>
+        <li>getNightModeStatus</li>
+        <li>getRotationStatus</li>
+        <li>getRotationAngle</li>
+        <li>getAutoOnStatus</li>         
+        <li>setRotation</li>
+        <li>setRotationAngle</li>  
+        <li>setFanSpeed</li>
+        <li>setNightModeOn</li>
+        <li>setNightModeOff</li>
+        <li>setHeatOn</li>
+        <li>setHeatOff</li>
+        <li>turnOn</li>
+        <li>turnOff</li>
     </ul>
     
-    <p>For setRotation and setFanSpeed additionally msg.payload.rotation and msg.payload.speed must be set. </p>
+    <p>For the following actions some additonal parameters are mandatory:</p>
+    <ul>
+        <li>setRotation: msg.payload.rotation</li>
+        <li>setRotationAngle: msg.payload.min_angle, msg.payload.max_angle</li>
+        <li>setFanSpeed: msg.payload.speed</li>
+    </ul>
 </script>
