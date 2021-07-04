@@ -94,10 +94,10 @@ export class Device extends EventEmitter {
         this.hasAdvancedAirQualitySensors = true;
         this.hasHumidifier = true;
         this.hasJetFocus = true;
-        this._apiV2018=true;
+        this._apiV2018 = true;
         break;
       case '438':
-        this._apiV2018=true;
+        this._apiV2018 = true;
         this.model = 'Dyson Pure Cool Tower';
         this.hardwareRevision = 'TP04';
         this.hasJetFocus = true;
@@ -112,21 +112,21 @@ export class Device extends EventEmitter {
       case '469':
         this.model = 'Dyson Pure Cool Link Desk';
         this.hardwareRevision = 'DP01';
-        this._apiV2018=true;
+        this._apiV2018 = true;
         break;
       case '475':
         this.model = 'Dyson Pure Cool Link Tower';
         this.hardwareRevision = 'TP02';
         break;
       case '520':
-        this._apiV2018=true;
+        this._apiV2018 = true;
         this.model = 'Dyson Pure Cool Desk';
         this.hardwareRevision = 'DP04';
         this.hasJetFocus = true;
         this.hasAdvancedAirQualitySensors = true;
         break;
       case '527':
-        this._apiV2018=true;
+        this._apiV2018 = true;
         this.model = 'Dyson Pure Hot+Cool';
         this.hardwareRevision = 'HP04';
         this.hasJetFocus = true;
@@ -298,6 +298,17 @@ export class Device extends EventEmitter {
     })
   }
 
+  getNightmodeStatus() {
+    return new Promise((resolve, reject) => {
+      this.once('state', (json) => {
+        const nmod = json['product-state']['nmod']
+        let on = json['product-state']['nmod'] === "ON"
+        resolve(on)
+      })
+      this._requestCurrentState()
+    })
+  }
+
   getAutoOnStatus() {
     return new Promise((resolve, reject) => {
       this.once('state', (json) => {
@@ -319,6 +330,17 @@ export class Device extends EventEmitter {
     })
   }
 
+  getRotationAngle() {
+    return new Promise((resolve, reject) => {
+      this.once('state', (json) => {
+        const osal = parseInt(json['product-state']['osal'], 10);
+        const osau = parseInt(json['product-state']['osau'], 10);
+        resolve({ min_angle: osal, max_angle: osau });
+      });
+      this._requestCurrentState();
+    });
+  };
+
   turnOff() {
     return this.setFan(false)
   }
@@ -337,9 +359,14 @@ export class Device extends EventEmitter {
 
   setFanSpeed(value) {
     const fnsp = Math.round(value / 10)
-    this._setStatus({ fnsp: this._apiV2018 ? "000" + fnsp : fnsp })
+    this._setStatus({ fnsp: this._apiV2018 && fnsp < 10 ? "000" + fnsp : this._apiV2018 && fnsp === 10 ? "00" + fnsp : fnsp });
     return this.getFanSpeed()
   }
+
+  setNightMode(value) {
+    this._setStatus({ nmod: value ? "ON" : "OFF" });
+    return this.getNightmodeStatus();
+  };
 
   setSleepTimer(minutes) {
     this._setStatus({ sltm: minutes })
@@ -381,6 +408,15 @@ export class Device extends EventEmitter {
     const oson = value ? 'ON' : 'OFF'
     this._setStatus({ oson })
     return this.getRotationStatus()
+  }
+
+  setRotationAngle(min_angle, max_angle) {
+    if (min_angle >= 5 && max_angle <= 355 && (max_angle - min_angle >= 30 || max_angle - min_angle === 0)) {
+      var osal = min_angle < 10 && this._apiV2018 ? "000" + min_angle : min_angle < 100 && this._apiV2018 ? "00" + min_angle : this._apiV2018 ? "0" + min_angle : min_angle
+      var osau = max_angle < 10 && this._apiV2018 ? "000" + max_angle : max_angle < 100 && this._apiV2018 ? "00" + max_angle : this._apiV2018 ? "0" + max_angle : max_angle
+      this._setStatus({ oson: 'ON', osal: osal, osau: osau, "ancp": "CUST" })
+      return this.getRotationAngle();
+    }
   }
 
   _requestCurrentState() {

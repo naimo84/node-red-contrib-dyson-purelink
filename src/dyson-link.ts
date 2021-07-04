@@ -139,8 +139,14 @@ module.exports = function (RED: Red) {
                 case 'getFanSpeed':
                     device.getFanSpeed().then(t => node.send({ payload: { fan_speed: t } }))
                     break;
+                case 'getNightModeStatus':
+                    device.getNightmodeStatus().then(t => node.send({ payload: { night_mode: t } }))
+                    break;
                 case 'getRotationStatus':
                     device.getRotationStatus().then(t => node.send({ payload: { rotation: t } }))
+                    break;
+                case 'getRotationAngle':
+                    device.getRotationAngle().then(t => node.send({ payload: t }))
                     break;
                 case 'getAutoOnStatus':
                     device.getAutoOnStatus().then(t => node.send({ payload: { auto_on: t } }))
@@ -163,6 +169,12 @@ module.exports = function (RED: Red) {
                 case 'turnOff':
                     device.turnOff();
                     break;
+                case 'setNightModeOn':
+                    device.setNightMode(true).then(t => node.send({ payload: { night_mode: t } }));
+                    break;
+                case 'setNightModeOff':
+                    device.setNightMode(false).then(t => node.send({ payload: { night_mode: t } }));
+                    break;
                 case 'setHeatOn':
                     device.setHeat(true);
                     break;
@@ -171,6 +183,9 @@ module.exports = function (RED: Red) {
                     break;
                 case 'setRotation':
                     device.setRotation(node.value || msg.payload.rotation).then(t => node.send({ payload: { rotation: t } }))
+                    break;
+                case 'setRotationAngle':
+                    device.setRotationAngle(msg.payload.min_angle, msg.payload.max_angle).then(t => node.send({ payload: t }))
                     break;
                 case 'setFanSpeed':
                     device.setFanSpeed(node.value || msg.payload.speed).then(t => node.send({ payload: { fan_speed: t } }))
